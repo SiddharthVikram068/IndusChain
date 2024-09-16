@@ -82,7 +82,7 @@ body {
 }
 
 .header {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.60)),
     url("assets/header1.jpg");
   background-position: center center;
   background-size: cover;

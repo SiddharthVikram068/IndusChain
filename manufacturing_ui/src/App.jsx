@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import './styles.css'
 // import 'swiper/swiper-bundle.min.css'
+import faq from './assets/faq.jpg'
+import media1 from './assets/media-1.jpg'
+import media2 from './assets/media-2.jpg'
+import media3 from './assets/media-3.jpg'
+import media4 from './assets/media-4.jpg'
+import media5 from './assets/media-5.jpg'
+import media6 from './assets/media-6.jpg'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,8 +28,8 @@ function App() {
           <ul className="nav__links" id="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#article">Articles</a></li>
-            <li><a href="#client">Clients</a></li>
+            <li><a href="#res">Resources</a></li>
+            <li><a href="#updates">Updates</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
@@ -59,24 +66,24 @@ function App() {
           <div>
             <h3 class="section__subheader">About Us</h3>
             <h2 class="section__header">
-              The Cleaver Industrial Business You Can Feel
+              The Smarter Industrial Business that can think
             </h2>
           </div>
           <p class="section__description">
-            With a relentless commitment to quality, efficiency, and customer
-            satisfaction, we pride ourselves on our hands-on approach to
+            With a relentless commitment to quality, efficiency, and innovation
+            ,we pride ourselves on our hands-on approach to
             industrial solutions. Discover the difference where expertise meets a
-            tangible touch for unparalleled success.
+            tangible touch of creativity and a rigor for problem solving.
           </p>
         </div>
         <div class="about__grid">
           <div class="about__card">
             <p>FITTING</p>
-            <h4>The arrival of the fitting</h4>
+            <h4>Fit your factory with IndusChain today</h4>
           </div>
           <div class="about__card">
-            <p>FACTORY</p>
-            <h4>Factory business wonder</h4>
+            <p>PLANNER</p>
+            <h4>Plan out your manifacturing plant with IIoT</h4>
           </div>
           <div class="about__card">
             <p>QUALITY</p>
@@ -85,33 +92,30 @@ function App() {
         </div>
       </section>
 
-      <section class="section__container faq__container" id="faq">
+      <section class="section__container faq__container" id="res">
         <div class="faq__image">
-          <img src="assets/faq.jpg" alt="faq" />
+          <img src={faq} alt="faq" />
         </div>
         <div class="faq__content">
-          <h3 class="section__subheader">Ask By Client</h3>
-          <h2 class="section__header">Frequently Asked Questions</h2>
+          <h3 class="section__subheader">Common Resources</h3>
+          <h2 class="section__header">Documentation and queries</h2>
           <p class="section__description">
-            A comprehensive resource designed to answer your most common queries
-            and provide valuable insights into our products, services, and the
-            industrial landscape.
+            IndusChain offers a comprehensive documentation on how to use the Services
+            and answer your queries about how to utilise it at it's full potential. 
+            There is also a developer portal available for small scale projects and 
+            how to use IndusChain at an individual level. 
           </p>
           <div class="faq__grid">
             <div class="faq__card">
               <div class="faq__header">
-                <h4>What types of industrial products do you offer?</h4>
+                <h4>Documentation and ESG report </h4>
                 <span><i class="ri-arrow-down-s-line"></i></span>
               </div>
-              <div class="faq__description">
-                We specialize in providing a diverse range of industrial products,
-                including machinery, equipment, and supplies tailored to meet the
-                unique needs of various sectors.
-              </div>
+
             </div>
             <div class="faq__card">
               <div class="faq__header">
-                <h4>How can I place an order for your products?</h4>
+                <h4>Frequently asked questions</h4>
                 <span><i class="ri-arrow-down-s-line"></i></span>
               </div>
               <div class="faq__description">
@@ -122,7 +126,7 @@ function App() {
             </div>
             <div class="faq__card">
               <div class="faq__header">
-                <h4>Are there any warranties on your products?</h4>
+                <h4>Developer resources and portal</h4>
                 <span><i class="ri-arrow-down-s-line"></i></span>
               </div>
               <div class="faq__description">
@@ -135,33 +139,30 @@ function App() {
         </div>
       </section>
 
-      <section class="section__container article__container" id="article">
-        <h3 class="section__subheader">Insight And Trends</h3>
+      <section class="section__container article__container" id="updates">
+        <h3 class="section__subheader">Insights And Innovation</h3>
         <h2 class="section__header">Recent Articles</h2>
         <div class="article__grid">
           <div class="article__card">
-            <img src="assets/article-1.jpg" alt="article" />
             <div>
-              <p>Mar 19, 2023</p>
+              <p>Sep 19, 2024</p>
               <a href="#">Innovation</a>
             </div>
-            <h4>Revolutionizing: The Latest in Industrial Innovation</h4>
+            <h4>IndusChain now capable of Predictive maintenance in Manifacturing Equipment</h4>
           </div>
           <div class="article__card">
-            <img src="assets/article-2.jpg" alt="article" />
             <div>
-              <p>May 05, 2023</p>
+              <p>Sep 19, 2024</p>
               <a href="#">Products</a>
             </div>
-            <h4>Spotlight: Enhancing Operations with Our Industrial Solutions</h4>
+            <h4>Utilising Cargochain with Industry planner, how to upgrade your supply chain</h4>
           </div>
           <div class="article__card">
-            <img src="assets/article-3.jpg" alt="article" />
             <div>
-              <p>Aug 24, 2023</p>
+              <p>Sep 19, 2024</p>
               <a href="#">Insights</a>
             </div>
-            <h4>Navigating: Expert Perspectives on Industrial Dynamics</h4>
+            <h4>Guide to use Flexsim with Induschain, road to maximising efficiency</h4>
           </div>
         </div>
       </section>
@@ -211,12 +212,12 @@ function App() {
           <div class="footer__col">
             <h4>Social Media</h4>
             <div class="footer__media">
-              <img src="assets/media-1.jpg" alt="media" />
-              <img src="assets/media-2.jpg" alt="media" />
-              <img src="assets/media-3.jpg" alt="media" />
-              <img src="assets/media-4.jpg" alt="media" />
-              <img src="assets/media-5.jpg" alt="media" />
-              <img src="assets/media-6.jpg" alt="media" />
+              <img src={media1} alt="media" />
+              <img src={media2} alt="media" />
+              <img src={media3} alt="media" />
+              <img src={media4} alt="media" />
+              <img src={media5} alt="media" />
+              <img src={media6} alt="media" />
             </div>
             <div class="footer__socials">
               <a href="#"><i class="ri-facebook-fill"></i></a>
