@@ -7,7 +7,9 @@ const App = () => {
     <View style={styles.container}>
       <Text>App </Text>
       <Link href="/qr" style={{color:'red'}}>qr</Link>
-      <Link href="/nextStep">nexttep</Link>
+      <Link href="/nextStep">nexttep</Link>           
+      <Link href="/sign-in">SignIn</Link>             
+      <Link href="/sign-up">SignUp</Link>              
     </View>
   )
 }
