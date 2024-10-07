@@ -19,4 +19,6 @@ Hardware —>
 - [ ]  Authentication machine
 - [ ]  IoT sensors for predicting maintenance
 
-What are the importance of different parameters in predictive analysis
+What are the importance of different parameters in predictive analysis.
+Why to use XGBoost model? Which Validation scheme? 
+
