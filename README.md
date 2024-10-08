@@ -1,7 +1,7 @@
 # IndusChain
 IndusChain is a smart industrial management solution
 
-
+blockchain contract address -> 0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6
 
 # Indus-chain
 
