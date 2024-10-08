@@ -4,9 +4,10 @@ import express, { json } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
 import prisma from '../utils/prismaClient.js';
-import authMiddleware from '../middleware/authMiddleware.js';  // Ensure this path is correct
-import { register, login } from './auth/index.js';
-import { createPlant } from './plant/index.js';
+import {authMiddleware, roleMiddleware} from '../middleware/authMiddleware.js';  // Ensure this path is correct
+import { register, login } from './auth/auth.js';
+import { createPlant, addEngineerToPlant, addManagerToPlant, getPlantDetails } from './plant/plant.js';
+import plantRoutes from './routes/plantRoutes.js';
 const app = express();
 
 
@@ -17,45 +18,20 @@ app.use(cors());
 app.use(json());
 
 // Registration route
-app.post('/api/register', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const token = await register(email, password);
-    res.json({ token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+app.post('/api/register', register);
 
 // Login route
-app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const token = await login(email, password);
-    res.json({ token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-
-
-// Create plant route
-app.post('/api/plants', authMiddleware, async (req, res) => {
-  const { name } = req.body;
-  try {
-    const plant = await createPlant(name, req.user.id);
-    res.json(plant);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+app.post('/api/login', login);
 
 
 // Protected route
 app.get('/api/protected', authMiddleware, (req, res) => {
   res.send(`Hello, ${req.user.role}`);
 });
+
+// plant routes
+app.use('/api/plants', plantRoutes);
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;

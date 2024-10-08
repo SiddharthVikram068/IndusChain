@@ -20,4 +20,14 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-export default authMiddleware;
+// makes sure no one except a certain role can go through this middleware
+export const roleMiddleware = (roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    next();
+  };
+};
+
+export default { authMiddleware, roleMiddleware };
