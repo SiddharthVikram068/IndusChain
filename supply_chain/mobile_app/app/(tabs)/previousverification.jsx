@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const previousVerification = () => {
+const previousverification = () => {
   return (
     <View>
-      <Text>previousVerification</Text>
+      <Text>previousverification</Text>
     </View>
   )
 }
 
-export default previousVerification
+export default previousverification
