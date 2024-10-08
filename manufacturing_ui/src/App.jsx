@@ -26,7 +26,7 @@ function App() {
             </div>
           </div>
           <ul className="nav__links" id="nav-links">
-            <li><a href="#home">Home</a></li>
+            <li><a href="#home">Login</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#res">Resources</a></li>
             <li><a href="#updates">Updates</a></li>
