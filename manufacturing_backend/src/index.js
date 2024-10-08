@@ -3,12 +3,12 @@
 import express, { json } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
-import { PrismaClient } from '@prisma/client';
-import authMiddleware from './middleware/authMiddleware.js';  // Ensure this path is correct
-import { register, login } from './auth.js';
-import { createPlant } from './plant.js';
+import prisma from '../utils/prismaClient.js';
+import authMiddleware from '../middleware/authMiddleware.js';  // Ensure this path is correct
+import { register, login } from './auth/index.js';
+import { createPlant } from './plant/index.js';
 const app = express();
-const prisma = new PrismaClient();
+
 
 config();
 

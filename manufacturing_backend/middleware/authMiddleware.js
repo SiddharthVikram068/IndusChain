@@ -1,17 +1,23 @@
 // middleware/authMiddleware.js
 
-import { verify } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
-const authMiddleware = (req, res, next) => {
+const { verify } = jwt;
+
+const authMiddleware = async (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'Unauthorized: No token provided' });
   }
-  verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user; // Add user info to request
+
+  try {
+    const user = await verify(token, process.env.JWT_SECRET);
+    req.user = user; // Attach user info to the request object
     next();
-  });
+  } catch (err) {
+    console.error('Token verification error:', err);
+    return res.status(403).json({ message: 'Forbidden: Invalid token' });
+  }
 };
 
 export default authMiddleware;
