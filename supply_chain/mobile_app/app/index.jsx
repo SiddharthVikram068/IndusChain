@@ -16,10 +16,10 @@ export default function Component() {
           {/* Lottie Animation with Smaller Size */}
           <LottieView
             ref={animation}
-            source={require('../assets/videos/intro.json')}
+            source={require('../assets/videos/intro2.json')}
             autoPlay
             loop
-            speed={3.9}
+            speed={0.9}
             style={styles.lottieAnimation}
           />
 
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,  // Slightly smaller title
     fontFamily: 'Poppins-Bold',
-    color: '#8E1C1C',
+    color: '#8E1E1C',
     marginBottom: 8,
     textTransform: 'capitalize',  // Sentence case
   },
