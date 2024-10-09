@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   signUpLink: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 20,
+    paddingTop: 20, 
   },
   signUpText: {
     fontSize: 16,
