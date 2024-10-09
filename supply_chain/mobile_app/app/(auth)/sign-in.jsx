@@ -101,7 +101,7 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9', // Light background color for a softer look
+    backgroundColor: '#ffffff', // Light background color for a softer look
     paddingHorizontal: 20, // Adjust padding for a better layout
     paddingBottom: 30,
     marginBottom:20,

@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
         paddingBottom: 100,
     },
     innerContainer: {
+      
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '15%',

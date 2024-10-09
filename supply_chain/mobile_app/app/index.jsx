@@ -19,7 +19,7 @@ export default function Component() {
             source={require('../assets/videos/intro.json')}
             autoPlay
             loop
-            speed={0.5}
+            speed={3.9}
             style={styles.lottieAnimation}
           />
 
@@ -66,9 +66,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   lottieAnimation: {
-    width: 150,  // Reduced size of the animation
-    height: 150, 
-    marginBottom: 20,  // Reduced spacing below the animation
+    width: 450,  // Reduced size of the animation
+    height: 250, 
+    marginBottom: 10,  // Reduced spacing below the animation
   },
   title: {
     fontSize: 28,  // Slightly smaller title
