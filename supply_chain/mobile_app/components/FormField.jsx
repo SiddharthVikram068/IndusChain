@@ -1,40 +1,54 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import React from 'react';
+import { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { icons } from "../constants";
 
-const FormField = ({title, value, placeholder, handleChangeText, otherStyles, ...props}) => {
+const FormField = ({
+  title,
+  value,
+  placeholder,
+  handleChangeText,
+  otherStyles,
+  ...props
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
-    <View style={[styles.fieldContainer, otherStyles]}>
-      <Text style={styles.label}>{title}</Text>
-      <TextInput
-        value={value}
-        placeholder={placeholder}
-        onChangeText={handleChangeText}
-        style={styles.input}
-        {...props}
-      />
+    <View className={`space-y-2 ${otherStyles}`}>
+      <Text className="text-base text-black font-semibold">{title}</Text>
+
+      <View
+        className={`w-full h-12 px-4 rounded-lg flex flex-row items-center border-2 ${
+          isFocused ? "border-brown-600 shadow-md" : "border-gray-300"
+        }`}
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }} // Transparent white background
+      >
+        <TextInput
+          className="flex-1 text-black font-semibold text-base"
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor="#7B7B8B"
+          onChangeText={handleChangeText}
+          secureTextEntry={title === "Password" && !showPassword}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          {...props}
+        />
+
+        {title === "Password" && (
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            {/* <Image
+              source={!showPassword ? icons.eye : icons.eyeHide}
+              className="w-6 h-6"
+              resizeMode="contain"
+            /> */}
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  fieldContainer: {
-    marginBottom: 15, // Adjust as needed to decrease the distance between fields
-  },
-  label: {
-    fontSize: 16,
-    color: '#333', // Adjust the color as needed
-    fontFamily: 'Poppins-Medium', // Ensure you have the correct font loaded
-    marginBottom: 5, // Adjust as needed to decrease the distance
-  },
-  input: {
-    borderWidth: 2,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    height: 48,
-    backgroundColor: '#fff', // Adjust the background color as needed
-    fontFamily: 'Poppins-Regular', // Ensure you have the correct font loaded
-  },
-});
-
 export default FormField;
+
+
