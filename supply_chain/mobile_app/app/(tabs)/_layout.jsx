@@ -70,7 +70,7 @@ const TabsLayout = () => {
                     }}
                 />
                 <Tabs.Screen
-                    name="profile"
+                    name="CreateProductScreen"
                     options={{
                         title: 'Profile',
                         headerShown: false,
@@ -85,7 +85,7 @@ const TabsLayout = () => {
                     }}
                 />
                 <Tabs.Screen
-                    name="previousverification"
+                    name="productDetails"
                     options={{
                         title: 'Tracker',
                         headerShown: false,

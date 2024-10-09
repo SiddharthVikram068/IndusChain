@@ -35,7 +35,7 @@ export default function Component() {
               title="Sign In"
               handlePress={() => router.push('/sign-in')}
               containerStyles={styles.button} // Use button style directly
-              borderColor="#000000"  // Maroon border
+              borderColor="#000000"  // Black border
               textColor="#000000"  // Black text for Sign In
             />
             <CustomButton
@@ -44,6 +44,24 @@ export default function Component() {
               containerStyles={styles.button} // Use button style directly
               borderColor="#70260F"  // Maroon border
               textColor="#000000"  // Black text for Register
+            />
+          </View>
+
+          {/* New Buttons for Wallet Navigation */}
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              title="Send"
+              handlePress={() => router.push('/web3/wallet_connect')}
+              containerStyles={styles.button} // Use button style directly
+              borderColor="#4CAF50"  // Green border
+              textColor="#FFFFFF"  // White text for Send
+            />
+            <CustomButton
+              title="Receive"
+              handlePress={() => router.push('/wallet/receive')}
+              containerStyles={styles.button} // Use button style directly
+              borderColor="#2196F3"  // Blue border
+              textColor="#FFFFFF"  // White text for Receive
             />
           </View>
         </View>
@@ -98,7 +116,6 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 25,  // Adds space below buttons
     borderWidth: 4,  // Thick border
-    borderColor: '#8F2808',  // Maroon border
     borderRadius: 10,  // Rounded corners
     alignItems: 'center',  // Center text horizontally
     justifyContent: 'center',  // Center text vertically
