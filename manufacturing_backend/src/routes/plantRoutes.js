@@ -13,6 +13,6 @@ router.post('/add-manager', authMiddleware, roleMiddleware(['OWNER']), addManage
 router.post('/add-engineer', authMiddleware, roleMiddleware(['OWNER']), addEngineerToPlant);
 
 // Managers and Engineers can view plant details, but not edit them
-router.get('/details/:plantId', authMiddleware, roleMiddleware(['MANAGER', 'ENGINEER']), getPlantDetails);
+router.get('/details/:plantId', authMiddleware, roleMiddleware(['OWNER','MANAGER', 'ENGINEER']), getPlantDetails);
 
 export default router;
