@@ -16,10 +16,10 @@ export default function Component() {
           {/* Lottie Animation with Smaller Size */}
           <LottieView
             ref={animation}
-            source={require('../assets/videos/intro.json')}
+            source={require('../assets/videos/intro2.json')}
             autoPlay
             loop
-            speed={0.5}
+            speed={0.9}
             style={styles.lottieAnimation}
           />
 
@@ -84,14 +84,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   lottieAnimation: {
-    width: 150,  // Reduced size of the animation
-    height: 150, 
-    marginBottom: 20,  // Reduced spacing below the animation
+    width: 450,  // Reduced size of the animation
+    height: 250, 
+    marginBottom: 10,  // Reduced spacing below the animation
   },
   title: {
     fontSize: 28,  // Slightly smaller title
     fontFamily: 'Poppins-Bold',
-    color: '#8E1C1C',
+    color: '#8E1E1C',
     marginBottom: 8,
     textTransform: 'capitalize',  // Sentence case
   },

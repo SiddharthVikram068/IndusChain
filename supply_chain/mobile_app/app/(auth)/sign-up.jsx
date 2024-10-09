@@ -22,7 +22,7 @@ const SignUp = () => {
     const handleUserTypeChange = (value) => {
         setForm({ ...form, userType: value });
     };
-
+    const [isSubmitting, setisSubmitting] = useState(false)
     const submit = () => {
         // Handle form submission here
         console.log(form); // Replace this with your submit logic
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
         paddingBottom: 100,
     },
     innerContainer: {
+      
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '15%',
