@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
 import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
 import Lottie from 'lottie-react-native';
-import DisplayButton from '../../components/DisplayButton'; // Import the new component
+import DisplayButton from '../../components/DisplayButton'; // Import the DisplayButton component
+import WalletButton from '../../components/WalletButton'; // Import the WalletButton component
+import { router } from 'expo-router';
 
 // Define your project ID and provider metadata
 const projectId = "1e17a2872b93b5b42a336585c052e9ff"; // Your WalletConnect project ID
@@ -19,6 +21,7 @@ const providerMetadata = {
 
 const WalletConnectionPage = () => {
   const { address, open, isConnected } = useWalletConnectModal();
+  const [showAddress, setShowAddress] = useState(false); // State to manage address visibility
 
   const handleConnection = () => {
     if (!isConnected) {
@@ -26,6 +29,11 @@ const WalletConnectionPage = () => {
     } else {
       router.replace('/scan'); // Navigate to the scan page if already connected
     }
+  };
+
+  // Function to toggle the address visibility with animation
+  const toggleAddressVisibility = () => {
+    setShowAddress(!showAddress);
   };
 
   return (
@@ -41,15 +49,16 @@ const WalletConnectionPage = () => {
         <Text style={styles.description}>
           Please connect your wallet to access all features of the CargoChain application.
         </Text>
-        <TouchableOpacity style={styles.button} onPress={handleConnection}>
-          <Text style={styles.buttonText}>
-            {isConnected ? 'Connected!' : 'Connect Wallet'}
-          </Text>
-        </TouchableOpacity>
-        
-        {/* Display connected address using the DisplayButton component */}
+
+        {/* Use WalletButton instead of TouchableOpacity */}
+        <WalletButton onPress={handleConnection} title={isConnected ? 'Connected!' : 'Connect Wallet'} />
+
+        {/* Display connected address using the DisplayButton component inside a curtain */}
         {isConnected && (
-          <DisplayButton address={address} />
+          <TouchableOpacity onPress={toggleAddressVisibility} style={styles.curtain}>
+            <Text style={styles.curtainText}>Show Address</Text>
+            {showAddress && <DisplayButton address={address} />}
+          </TouchableOpacity>
         )}
       </View>
 
@@ -77,6 +86,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#007bff', // Add border color for a wallet effect
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   animation: {
     width: '100%',
@@ -97,21 +112,20 @@ const styles = StyleSheet.create({
     color: '#34495E',
     paddingHorizontal: 20,
   },
-  button: {
-    backgroundColor: '#007bff',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
+  curtain: {
+    marginTop: 20,
+    padding: 10,
     borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
+    borderWidth: 1,
+    borderColor: '#007bff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f0f8ff', // Light blue color for the curtain effect
   },
-  buttonText: {
-    fontSize: 18,
-    color: '#ffffff',
-    fontWeight: '600',
+  curtainText: {
+    fontSize: 16,
+    color: '#007bff',
+    fontWeight: 'bold',
   },
 });
 

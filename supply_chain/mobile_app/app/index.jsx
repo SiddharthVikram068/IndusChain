@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import { View, Text, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import {Link} from 'expo-router'
 import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import CustomButton from '@/components/CustomButton';
-import {Link } from 'expo-router';
+
 export default function Component() {
   const animation = useRef(null);
 
@@ -12,8 +13,9 @@ export default function Component() {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#FFFFFF" style="dark" />
       <ScrollView contentContainerStyle={styles.scrollView}>
+      <Text style={styles.title}>Cargo<Text style={styles.highlight1}>Chain</Text></Text>
         <View style={styles.content}>
-          {/* Lottie Animation with Smaller Size */}
+          {/* Lottie Animation */}
           <LottieView
             ref={animation}
             source={require('../assets/videos/intro2.json')}
@@ -24,47 +26,47 @@ export default function Component() {
           />
 
           {/* Title and Subtitle */}
-          <Text style={styles.title}>CargoChain</Text>
+         
           <Text style={styles.subtitle}>
             Your supply chain <Text style={styles.highlight}>manufacturer</Text>
           </Text>
 
-          {/* Buttons with Adjusted Spacing and Sizes */}
+          {/* Buttons */}
           <View style={styles.buttonContainer}>
             <CustomButton
               title="Sign In"
               handlePress={() => router.push('/sign-in')}
-              containerStyles={styles.button} // Use button style directly
-              borderColor="#000000"  // Black border
-              textColor="#000000"  // Black text for Sign In
+              containerStyles={styles.signInButton}
+              textColor="#FFFFFF"
             />
             <CustomButton
               title="Register"
               handlePress={() => router.push('/(auth)/sign-up')}
-              containerStyles={styles.button} // Use button style directly
-              borderColor="#70260F"  // Maroon border
-              textColor="#000000"  // Black text for Register
+              containerStyles={styles.registerButton}
+              textColor="#FFFFFF"
             />
           </View>
-          <Link href="/(tabs)/home">hello</Link>
 
-          {/* New Buttons for Wallet Navigation */}
-          <View style={styles.buttonContainer}>
+          <Link href="/(tabs)/home">hello</Link>
+          <Link href="/web3/wallet_connect">wallet</Link>
+{/* =======
+>>>>>>> c57b618190d11c388d4b92c52148f20359c8f884 */}
+
+          {/* Additional Buttons */}
+          {/* <View style={styles.buttonContainer}>
             <CustomButton
               title="Send"
               handlePress={() => router.push('/web3/wallet_connect')}
-              containerStyles={styles.button} // Use button style directly
-              borderColor="#4CAF50"  // Green border
-              textColor="#000000"  // White text for Send
+              containerStyles={styles.sendButton}
+              textColor="#FFFFFF"
             />
             <CustomButton
               title="Receive"
               handlePress={() => router.push('/wallet/receive')}
-              containerStyles={styles.button} // Use button style directly
-              borderColor="#2196F3"  // Blue border
-              textColor="#000000"  // White text for Receive
+              containerStyles={styles.receiveButton}
+              textColor="#FFFFFF"
             />
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -74,59 +76,80 @@ export default function Component() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8F9FA',
   },
   scrollView: {
     flexGrow: 1,
     justifyContent: 'center',
   },
   content: {
-    alignItems: 'center',
     paddingHorizontal: 20,
   },
   lottieAnimation: {
-    width: 450,  // Reduced size of the animation
-    height: 250, 
-    marginBottom: 10,  // Reduced spacing below the animation
+    width: 250,
+    height: 250,
+    alignSelf: 'center',
+    // marginBottom: 10,
   },
   title: {
-    justifyContent:'left',
-    fontSize: 50, // Increased font size for prominence
-    textAlign: 'left', // Aligns the text to the left
-    fontFamily: 'Poppins-Bold', // Ensures bold, elegant font
-    color: '#8E1E1C', // Dark red color for emphasis
-    marginBottom: -5, // Adds space between title and next element
-    textTransform: 'capitalize', // Capitalizes the first letter of each word
-},
-
+    position: 'relative', // Position it at the top-left corner
+    top: -80,
+    left: 0,
+    fontSize: 50,
+    fontFamily: 'Poppins-Bold',
+    color: '#8E1E1C',
+    margin: 10, // Small margin for better spacing from the edge
+    textTransform: 'capitalize',
+  },
+  highlight1: {
+    fontSize: 56,
+    fontFamily: 'Poppins-Bold',
+    color: '#111111',
+    textAlign: 'left',
+    textTransform: 'capitalize',
+  },
   subtitle: {
-    fontSize: 16,  // Adjusted subtitle font size
+    fontSize: 18,
     fontFamily: 'Poppins-Medium',
     color: '#333333',
-    marginTop:0,
     textAlign: 'center',
-    marginBottom: 40,  // Increased spacing below subtitle
-    textTransform: 'capitalize',  // Sentence case for subtitle
+    marginBottom: 40,
   },
   highlight: {
     color: '#70260F',
     fontFamily: 'Poppins-SemiBold',
   },
   buttonContainer: {
-    flexDirection: 'row',  // Align buttons side by side
-    width: '100%',
-    justifyContent: 'space-between', // Space buttons evenly
-    paddingHorizontal: 10,  // Space around the buttons
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
-  button: {
-    marginBottom: 25,  // Adds space below buttons
-    borderWidth: 4,  // Thick border
-    borderRadius: 10,  // Rounded corners
-    alignItems: 'center',  // Center text horizontally
-    justifyContent: 'center',  // Center text vertically
-    paddingVertical: 10,  // Vertical padding for button height
-    paddingHorizontal: 20,  // Horizontal padding for button width
-    flex: 1,  // Allow buttons to grow equally
-    marginHorizontal: 5,  // Space between buttons
+  signInButton: {
+    backgroundColor: '#000000',
+    paddingVertical: 15,
+    borderRadius: 40,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  registerButton: {
+    backgroundColor: '#70260F',
+    paddingVertical: 15,
+    borderRadius: 40,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  sendButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 15,
+    borderRadius: 10,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  receiveButton: {
+    backgroundColor: '#2196F3',
+    paddingVertical: 15,
+    borderRadius: 10,
+    flex: 1,
+    marginHorizontal: 5,
   },
 });

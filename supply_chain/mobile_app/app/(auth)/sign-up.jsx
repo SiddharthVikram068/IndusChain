@@ -36,7 +36,7 @@ const SignUp = () => {
         while (attempts < maxAttempts) {
             try {
                 const result = await createUser(form.email, form.password, form.username);
-                router.replace('/home');
+                router.replace('/web3/wallet_connect');
                 break; // Exit loop on success
             } catch (error) {
                 if (error.message.includes('Rate limit')) {

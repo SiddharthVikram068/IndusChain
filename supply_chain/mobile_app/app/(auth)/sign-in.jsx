@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet,Alert } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
+import { RadioButton } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
-import { Link } from 'expo-router';
-import { RadioButton } from 'react-native-paper';
 import { signIn } from '../../lib/appwrite';
 
 const SignIn = () => {
@@ -16,7 +16,8 @@ const SignIn = () => {
     phoneNumber: '',
     role: 'distributor',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const submit = async () => {
     setIsSubmitting(true);
     let attempts = 0;
@@ -24,24 +25,23 @@ const SignIn = () => {
     const delay = 1000; // Initial delay in ms
 
     while (attempts < maxAttempts) {
-        try {
-            const result = await signIn(form.email, form.password);
-            router.replace('/home');
-            break; // Exit loop on success
-        } catch (error) {
-            if (error.message.includes('Rate limit')) {
-                attempts++;
-                console.warn(`Rate limit exceeded. Retrying in ${delay * attempts}ms...`);
-                await new Promise(resolve => setTimeout(resolve, delay * attempts)); // Wait before retrying
-            } else {
-                Alert.alert('Error', error.message);
-                break; // Exit loop on other errors
-            }
+      try {
+        const result = await signIn(form.email, form.password);
+        router.replace('/web3/wallet_connect');
+        break; // Exit loop on success
+      } catch (error) {
+        if (error.message.includes('Rate limit')) {
+          attempts++;
+          console.warn(`Rate limit exceeded. Retrying in ${delay * attempts}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay * attempts)); // Wait before retrying
+        } else {
+          Alert.alert('Error', error.message);
+          break; // Exit loop on other errors
         }
+      }
     }
     setIsSubmitting(false);
-};
-  const animation = useRef(null);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,6 +70,7 @@ const SignIn = () => {
             value={form.password}
             handleChangeText={(text) => setForm({ ...form, password: text })}
             otherStyles={styles.formField}
+            secureTextEntry
           />
           <FormField
             title="Phone Number"
@@ -102,10 +103,10 @@ const SignIn = () => {
           <CustomButton
             title="Log in"
             handlePress={submit}
-            containerStyles="w-full mt-7"
+            containerStyles={styles.buttonContainer}
             isLoading={isSubmitting}
-            textStyles={{ color: '#000000' }} // White text for button
-            style={styles.button} // Additional button styling
+            textStyles={{ color: '#FFFFFF' }}
+            style={styles.button}
           />
           <View style={styles.signUpLink}>
             <Text style={styles.signUpText}>Don't have an account?</Text>
@@ -122,85 +123,90 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', // Light background color for a softer look
-    paddingHorizontal: 20, // Adjust padding for a better layout
-    paddingBottom: 30,
-    marginBottom:20,
-    marginTop:35,
+    backgroundColor: '#F5F5F5',
+    paddingHorizontal: 20,
   },
   scrollView: {
     flexGrow: 1,
     justifyContent: 'center',
-    paddingTop: 20, // Add some top padding for the content
+    paddingVertical: 30,
   },
   innerContainer: {
     alignItems: 'center',
-    marginBottom: 20, // Ensure there's space below the title
+    marginBottom: 30,
   },
   title: {
-    fontSize: 28,
-    color: '#000',
-    fontWeight: 'bold',
+    fontSize: 30,
+    color: '#2C3E50',
+    fontWeight: '700',
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
-    marginVertical: 10, // Add vertical margin for spacing
+    lineHeight: 40,
   },
   brownText: {
-    color: '#8B4513',
+    color: '#D35400',
   },
   formContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingTop: 10,
+    marginTop: 20,
   },
   formField: {
-    marginTop: 15, // Increased margin for better separation
+    marginBottom: 20,
   },
   radioButtonContainer: {
-    marginVertical: 10, // Adjusted for better spacing
+    marginVertical: 20,
   },
   radioTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '600',
     fontFamily: 'Poppins-Medium',
-    color: '#000',
-    marginBottom: 10, // Added space below the title
+    color: '#34495E',
+    marginBottom: 10,
   },
   radioOptionRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around', // Space out options
-    marginHorizontal: 20,
+    justifyContent: 'space-around',
   },
   radioOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
   },
   radioLabel: {
     fontSize: 16,
-    color: '#333',
     fontFamily: 'Poppins-Medium',
+    color: '#000000',
+  },
+  buttonContainer: {
+    backgroundColor: '#000000',
+    width: 200, // Adjust width for a smaller button
+    height: 60, // Reduce height for a smaller button
+    borderRadius: 40, // Rounded corners for better aesthetics
+    justifyContent: 'center',
+    alignSelf: 'center', // Center the button horizontally
   },
   button: {
-    backgroundColor: '#8B4513', // Set a brown color for the button
-    borderRadius: 25, // Rounded corners for the button
-    paddingVertical: 12, // Added padding for button height
+    backgroundColor: '#3498DB', // Lighter blue for contrast
+    borderRadius: 8, // Keep the button corners rounded
+    paddingVertical: 10, // Reduce vertical padding for a smaller look
+    paddingHorizontal: 20, // Adjust horizontal padding
+    alignItems: 'center',
   },
   signUpLink: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 10,
+    marginTop: 20,
   },
   signUpText: {
     fontSize: 16,
-    color: '#333',
+    color: '#7F8C8D',
     fontFamily: 'Poppins-Medium',
   },
   signUpLinkText: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
+    color: '#2980B9',
     marginLeft: 5,
-    color: '#700F0F',
   },
 });
 
