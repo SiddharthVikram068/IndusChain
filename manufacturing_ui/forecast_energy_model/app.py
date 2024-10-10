@@ -27,7 +27,9 @@ class EnergyPredictionModel:
 
 if __name__ == "__main__":
     # Load the model
-    model_filename = 'energy_prediction_model.joblib'
+    # model_filename = 'energy_prediction_model.joblib'
+    model_filename = 'model.joblib'
+
     energy_model = EnergyPredictionModel(model_filename)
 
     # User input for prediction
