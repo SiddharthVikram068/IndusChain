@@ -15,13 +15,13 @@ const CustomButton = ({
       onPress={handlePress}
       activeOpacity={0.65}
       style={{
-        borderWidth: 3,  // Thick border
-        borderColor: borderColor || '#8E1C1C',  // Default maroon shade
-        borderRadius: 10,  // Rounded corners
-        minHeight: 55,  // Reduced height
+        borderWidth: 1,  // Thick border
+        borderRadius: 50,  // More rounded corners for pill-shaped button
+        minHeight: 55,  // Button height
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'transparent', // No fill
+        backgroundColor: 'transparent', // No fill by default
+        borderColor: borderColor || '#8E1C1C',  // Default border color
         ...containerStyles, // Spread any additional styles
       }}
       disabled={isLoading}
@@ -29,11 +29,12 @@ const CustomButton = ({
       <Text 
         style={{
           color: textColor || '#8E1C1C', // Default text color
-          fontSize: 24,
+          fontSize: 20,  // Slightly smaller font size for rounded buttons
+          fontWeight: 'bold',
           ...textStyles // Spread any additional text styles
         }}
       >
-        {title}  {/* Ensure title is wrapped in Text */}
+        {title}
       </Text>
     </TouchableOpacity>
   );
