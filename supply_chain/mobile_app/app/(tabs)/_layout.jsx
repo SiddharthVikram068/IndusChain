@@ -16,6 +16,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
                     marginBottom: 4, // Adjust spacing between icon and text
                 }}
             />
+            
             <Text
                 style={{
                     fontSize: 11,  // Reduced font size for a more compact look
@@ -28,6 +29,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
         </View>
     );
 };
+
 
 const TabsLayout = () => {
     return (
@@ -72,28 +74,30 @@ const TabsLayout = () => {
                 <Tabs.Screen
                     name="CreateProductScreen"
                     options={{
-                        title: 'Profile',
+                        title: 'Create',
                         headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <TabIcon
-                                icon={icons.user}
+                                icon={icons.create}
                                 color={color}
-                                name="Profile"
+                                name="Create"
                                 focused={focused}
                             />
                         ),
                     }}
+
+
                 />
                 <Tabs.Screen
                     name="productDetails"
                     options={{
-                        title: 'Tracker',
+                        title: 'Details',
                         headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <TabIcon
-                                icon={icons.previous}
+                                icon={icons.details}
                                 color={color}
-                                name="Tracker"
+                                name="Details"
                                 focused={focused}
                             />
                         ),

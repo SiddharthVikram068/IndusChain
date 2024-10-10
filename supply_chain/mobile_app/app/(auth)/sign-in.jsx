@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet,Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link } from 'expo-router';
 import { RadioButton } from 'react-native-paper';
+import { signIn } from '../../lib/appwrite';
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -16,10 +17,30 @@ const SignIn = () => {
     role: 'distributor',
   });
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const submit = () =>
-  {
+  const submit = async () => {
+    setIsSubmitting(true);
+    let attempts = 0;
+    const maxAttempts = 5;
+    const delay = 1000; // Initial delay in ms
 
-  }
+    while (attempts < maxAttempts) {
+        try {
+            const result = await signIn(form.email, form.password);
+            router.replace('/home');
+            break; // Exit loop on success
+        } catch (error) {
+            if (error.message.includes('Rate limit')) {
+                attempts++;
+                console.warn(`Rate limit exceeded. Retrying in ${delay * attempts}ms...`);
+                await new Promise(resolve => setTimeout(resolve, delay * attempts)); // Wait before retrying
+            } else {
+                Alert.alert('Error', error.message);
+                break; // Exit loop on other errors
+            }
+        }
+    }
+    setIsSubmitting(false);
+};
   const animation = useRef(null);
 
   return (

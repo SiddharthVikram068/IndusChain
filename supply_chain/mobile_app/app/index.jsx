@@ -54,14 +54,14 @@ export default function Component() {
               handlePress={() => router.push('/web3/wallet_connect')}
               containerStyles={styles.button} // Use button style directly
               borderColor="#4CAF50"  // Green border
-              textColor="#FFFFFF"  // White text for Send
+              textColor="#000000"  // White text for Send
             />
             <CustomButton
               title="Receive"
               handlePress={() => router.push('/wallet/receive')}
               containerStyles={styles.button} // Use button style directly
               borderColor="#2196F3"  // Blue border
-              textColor="#FFFFFF"  // White text for Receive
+              textColor="#000000"  // White text for Receive
             />
           </View>
         </View>

@@ -1,24 +1,28 @@
 // appwrite.js
-import { Account, Avatars, Client, Databases, ID, Query } from 'react-native-appwrite';
+import { Account, Client, Databases, ID, Query } from 'react-native-appwrite';
+
 export const appwriteConfig = {
-    endpoint:'https://cloud.appwrite.io/v1',
-    platform:'com.supplyChain.indusChain',
-    projectId:'6704b1640010c980e906',
-    databaseId:'67069945001092f38374',
-    userCollectionId:'67069968000158bda1da',
-    storageId:'6706c30e00115eacebd2',
-}
+    endpoint: 'https://cloud.appwrite.io/v1',
+    platform: 'com.supplyChain.indusChain',
+    projectId: '6704b1640010c980e906',
+    databaseId: '67069945001092f38374',
+    userCollectionId: '67069968000158bda1da',
+    storageId: '6706c30e00115eacebd2',
+};
+
 const client = new Client();
 
+// Set up the Appwrite client with the correct configuration
 client
-    .setEndpoint(config.endpoint) // Your Appwrite Endpoint
-    .setProject(config.projectId) // Your project ID
-    .setPlatform(config.platform); // Your application ID or bundle ID.
+    .setEndpoint(appwriteConfig.endpoint) // Use the correct config reference
+    .setProject(appwriteConfig.projectId); // Use the correct config reference
 
+// Initialize Account, Avatars, and Databases
 const account = new Account(client);
-const avatars = new Avatars(client);
+// const avatars = new Avatars(client);
 const databases = new Databases(client);
 
+// Function to create a new user
 export const createUser = async (email, password, username) => {
     try {
         const newAccount = await account.create(
@@ -29,61 +33,67 @@ export const createUser = async (email, password, username) => {
         );
         if (!newAccount) throw new Error('Account creation failed');
 
-        const avatarUrl = avatars.getInitials();
+       
 
         await signIn(email, password);
 
         const newUser = await databases.createDocument(
-            config.databaseId,
-            config.userCollectionId,
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
             ID.unique(),
             {
                 accountId: newAccount.$id,
                 email,
                 username,
-                password,
-                avatar: avatarUrl,
+            
             }
         );
+        
+        
 
         return newUser;
     } catch (error) {
-        console.log(error);
-        throw new Error(error);
+        console.error(error);
+        throw new Error(error.message); // Provide the error message for easier debugging
     }
 };
 
-export const signIn = async(email, password) => {
+// Function to sign in the user
+export const signIn = async (email, password) => {
     try {
         const session = await account.createEmailPasswordSession(email, password);
         return session;
     } catch (error) {
-        throw new Error(error);
+        console.error(error);
+        throw new Error(error.message); // Provide the error message for easier debugging
     }
-}
+};
 
-export const getCurrentUser = async() => {
+// Function to get the current user
+export const getCurrentUser = async () => {
     try {
         const currentAccount = await account.get();
-        if(!currentAccount) throw Error;
+        if (!currentAccount) throw new Error('No current user');
         const currentUser = await databases.listDocuments(
-            config.databaseId,
-            config.userCollectionId,
-            [Query.equal('accountId',currentAccount.$id)]
+            appwriteConfig.databaseId, // Correct reference
+            appwriteConfig.userCollectionId, // Correct reference
+            [Query.equal('accountId', currentAccount.$id)]
         );
 
-        if(!currentUser) throw Error;
+        if (!currentUser) throw new Error('No user found');
         return currentUser.documents[0];
-
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        throw new Error(error.message); // Provide the error message for easier debugging
     }
-}
+};
 
-export const logout = async() => {
+// Function to log out the current user
+export const logout = async () => {
     try {
         await account.deleteSessions('current');
     } catch (error) {
-        throw new Error(error);
+        console.error(error);
+        throw new Error(error.message); // Provide the error message for easier debugging
     }
-}
+};

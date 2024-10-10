@@ -1,41 +1,67 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native'; // Import Lottie for animations
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router'; // Ensure you're using useRouter for navigation
 import { RadioButton } from 'react-native-paper';
-
+import { createUser } from '../../lib/appwrite';
+import {router} from 'expo-router';
 const SignUp = () => {
     const [form, setForm] = useState({
-        name: '',
+        username: '',
         phoneNumber: '',
         email: '',
         dateOfBirth: '',
-        password: '', // Added password state
+        password: '',
         userType: 'USER',
     });
 
     const animation = useRef(null);
+    const router = useRouter(); // Using useRouter hook for navigation
 
     const handleUserTypeChange = (value) => {
         setForm({ ...form, userType: value });
     };
-    const [isSubmitting, setisSubmitting] = useState(false)
-    const submit = () => {
-        // Handle form submission here
-        console.log(form); // Replace this with your submit logic
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const submit = async () => {
+        setIsSubmitting(true);
+        let attempts = 0;
+        const maxAttempts = 5;
+        const delay = 1000; // Initial delay in ms
+    
+        while (attempts < maxAttempts) {
+            try {
+                const result = await createUser(form.email, form.password, form.username);
+                router.replace('/home');
+                break; // Exit loop on success
+            } catch (error) {
+                if (error.message.includes('Rate limit')) {
+                    attempts++;
+                    console.warn(`Rate limit exceeded. Retrying in ${delay * attempts}ms...`);
+                    await new Promise(resolve => setTimeout(resolve, delay * attempts)); // Wait before retrying
+                } else {
+                    Alert.alert('Error', error.message);
+                    break; // Exit loop on other errors
+                }
+            }
+        }
+        setIsSubmitting(false);
     };
+    
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.innerContainer}>
                     {/* Lottie Animation */}
+                    {/* Uncomment this to use Lottie Animation */}
                     {/* <LottieView
                         ref={animation}
-                        source={require('../../assets/videos/loginsignin.json')} // Adjust the path to your animation file
+                        source={require('../../assets/videos/loginsignin.json')}
                         autoPlay
                         loop
                         style={styles.lottieAnimation}
@@ -45,8 +71,8 @@ const SignUp = () => {
                 <View style={styles.formContainer}>
                     <FormField
                         title="Name"
-                        value={form.name}
-                        handleChangeText={(text) => setForm({ ...form, name: text })}
+                        value={form.username}
+                        handleChangeText={(text) => setForm({ ...form, username: text })}
                         otherStyles={styles.formField}
                     />
                     <FormField
@@ -71,7 +97,7 @@ const SignUp = () => {
                         keyboardType="email-address"
                     />
                     <FormField
-                        title="Password" // New Password Field
+                        title="Password"
                         value={form.password}
                         handleChangeText={(text) => setForm({ ...form, password: text })}
                         otherStyles={styles.formField}
@@ -121,7 +147,7 @@ const SignUp = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF', // White background
+        backgroundColor: '#FFFFFF',
     },
     scrollView: {
         flexGrow: 1,
@@ -130,14 +156,13 @@ const styles = StyleSheet.create({
         paddingBottom: 100,
     },
     innerContainer: {
-      
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '15%',
         marginBottom: 9,
     },
     lottieAnimation: {
-        width: 100, // Adjusted animation size
+        width: 100,
         height: 140,
         marginBottom: 5,
     },
@@ -150,7 +175,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     brownText: {
-        color: '#8B4513', // Brown color for "CargoChain"
+        color: '#8B4513',
     },
     formContainer: {
         flex: 1,
@@ -179,7 +204,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'Poppins-SemiBold',
         marginLeft: 6,
-        color: '#8B4513', // Brown color for the sign-in text
+        color: '#8B4513',
     },
     radioContainer: {
         marginVertical: 10,
