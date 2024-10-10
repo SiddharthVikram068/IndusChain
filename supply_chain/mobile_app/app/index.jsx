@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import CustomButton from '@/components/CustomButton';
-
+import {Link } from 'expo-router';
 export default function Component() {
   const animation = useRef(null);
 
@@ -46,6 +46,7 @@ export default function Component() {
               textColor="#000000"  // Black text for Register
             />
           </View>
+          {/* <Link href="/(tabs)/home">hello</Link> */}
 
           {/* New Buttons for Wallet Navigation */}
           <View style={styles.buttonContainer}>
@@ -89,16 +90,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,  // Reduced spacing below the animation
   },
   title: {
-    fontSize: 28,  // Slightly smaller title
-    fontFamily: 'Poppins-Bold',
-    color: '#8E1E1C',
-    marginBottom: 8,
-    textTransform: 'capitalize',  // Sentence case
-  },
+    justifyContent:'left',
+    fontSize: 50, // Increased font size for prominence
+    textAlign: 'left', // Aligns the text to the left
+    fontFamily: 'Poppins-Bold', // Ensures bold, elegant font
+    color: '#8E1E1C', // Dark red color for emphasis
+    marginBottom: -5, // Adds space between title and next element
+    textTransform: 'capitalize', // Capitalizes the first letter of each word
+},
+
   subtitle: {
     fontSize: 16,  // Adjusted subtitle font size
     fontFamily: 'Poppins-Medium',
     color: '#333333',
+    marginTop:0,
     textAlign: 'center',
     marginBottom: 40,  // Increased spacing below subtitle
     textTransform: 'capitalize',  // Sentence case for subtitle

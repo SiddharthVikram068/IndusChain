@@ -1,30 +1,10 @@
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-// import { Stack } from 'expo-router'
-
-// const RootLayout = () => {
-//   return (
-//     <Stack>
-//         {/* Render the index screen without the header */}
-//         <Stack.Screen name="index" options={{ headerShown: false }} />
-//     </Stack>
-//   )
-// }
-
-// export default RootLayout
-
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { Stack, SplashScreen } from 'expo-router';
 import { useFonts } from 'expo-font';
 import GlobalProvider from '../context/globalProvider';
-// import { MetaMaskProvider } from '@metamask/sdk-react';
 import 'react-native-gesture-handler';
 
-
 SplashScreen.preventAutoHideAsync();
-
-
 
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
@@ -37,31 +17,23 @@ const RootLayout = () => {
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
-  
-   
   });
 
-  useEffect(()=> {
-    if(error) throw error;
-    if(fontsLoaded) SplashScreen.hideAsync();
-  },[fontsLoaded, error] )
+  useEffect(() => {
+    if (error) throw error;
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded, error]);
 
-if(!fontsLoaded && !error) return null;
+  if (!fontsLoaded && !error) return null;
 
   return (
-  <GlobalProvider>
-    <Stack>
-     
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
-     
-      {/* <Stack.Screen name="profile" options={{ headerShown: false }} /> */}
-     
-    </Stack>
+    <GlobalProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
     </GlobalProvider>
-
   );
 };
 

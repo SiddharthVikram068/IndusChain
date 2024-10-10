@@ -4,11 +4,13 @@ import qr from "../assets/icons/qr.png"
 import user from "../assets/icons/user.png"
 import create from "../assets/icons/create.png"
 import details from "../assets/icons/details.png"
+import service from "../assets/icons/service.png"
 export default {
 map,
 previous,
 qr,
 user,
 create,
-details
+details,
+service
 };

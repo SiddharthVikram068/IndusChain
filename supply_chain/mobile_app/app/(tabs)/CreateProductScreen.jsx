@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
 import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
 import { ethers } from 'ethers';
 import SupplyChainContract from '../../contract/SupplyChain.json'; // Replace with your contract's ABI JSON file
+import CustomButton from '../../components/CustomButton'; // Custom button component
+import FormField from '../../components/FormField'; // Custom form field component
 
 const projectId = "1e17a2872b93b5b42a336585c052e9ff";
 const contractAddress = "0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6"; // Replace with your contract address
-
 
 const providerMetadata = {
   name: 'YOUR_PROJECT_NAME',
@@ -31,91 +25,112 @@ const CreateProductScreen = () => {
   const [productName, setProductName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [location, setLocation] = useState('');
-  const { address, open, isConnected, provider } = useWalletConnectModal();
+  const { provider } = useWalletConnectModal();
 
   const handleCreateProduct = async () => {
     try {
-      // Connect to the wallet
-      const etherprovider = new ethers.providers.Web3Provider(provider);
-      const signer = etherprovider.getSigner();
-
-      // Create a contract instance
+      const etherProvider = new ethers.providers.Web3Provider(provider);
+      const signer = etherProvider.getSigner();
       const contract = new ethers.Contract(contractAddress, SupplyChainContract.abi, signer);
 
-      // Call the addProduct function on the smart contract
       const tx = await contract.addProduct(
-        ethers.utils.parseUnits(productId, 0), // Assuming productId is an integer
+        ethers.utils.parseUnits(productId, 0), 
         productName,
         companyName,
         location
       );
 
-      // Wait for the transaction to be mined
       await tx.wait();
       Alert.alert('Success', 'Product created successfully!');
-      
-      // Reset form fields
-      setProductId('');
-      setProductName('');
-      setCompanyName('');
-      setLocation('');
+      resetForm();
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'An error occurred while creating the product. Please try again.');
     }
   };
 
+  const resetForm = () => {
+    setProductId('');
+    setProductName('');
+    setCompanyName('');
+    setLocation('');
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Create Product</Text>
-      <TextInput
-        style={styles.input}
+      <Text style={styles.subTitle}>Fill in the details below to add a product to the supply chain.</Text>
+      
+      <FormField
         placeholder="Product ID"
         value={productId}
         onChangeText={setProductId}
-        keyboardType="numeric" // Assuming product ID is numeric
+        keyboardType="numeric"
+        style={styles.formField}
       />
-      <TextInput
-        style={styles.input}
+      
+      <FormField
         placeholder="Product Name"
         value={productName}
         onChangeText={setProductName}
+        style={styles.formField}
       />
-      <TextInput
-        style={styles.input}
+      
+      <FormField
         placeholder="Company Name"
         value={companyName}
         onChangeText={setCompanyName}
+        style={styles.formField}
       />
-      <TextInput
-        style={styles.input}
+      
+      <FormField
         placeholder="Location"
         value={location}
         onChangeText={setLocation}
+        style={styles.formField}
       />
-      <Button title="Create Product" onPress={handleCreateProduct} />
+
+      <CustomButton 
+        title="Create Product" 
+        onPress={handleCreateProduct} 
+        style={styles.button} 
+      />
+      
       <WalletConnectModal projectId={projectId} providerMetadata={providerMetadata} />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
-    padding: 16,
+    padding: 20,
+    backgroundColor: '#ffffff', // Set background to white
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 16,
+    textAlign: 'center',
+    color: '#333333', // Darker text color for contrast
+    marginBottom: 10,
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+  subTitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#666666', // Light gray text for subtitle
+    marginBottom: 30, // Spacing before form fields
+  },
+  formField: {
+    marginBottom: 20, // Increased margin between form fields
+  },
+  button: {
+    paddingTop:40,
+    marginTop: 50, // Increased margin between "Location" and "Create Product" button
+    backgroundColor: '#007bff', // Bright primary color for button
+    paddingVertical: 14,
+    borderRadius: 100,
+    elevation: 3, // Adds shadow effect on Android
   },
 });
 
