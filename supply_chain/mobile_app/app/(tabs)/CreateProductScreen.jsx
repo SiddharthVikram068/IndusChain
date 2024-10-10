@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  Image,
+} from 'react-native';
 import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
 import { ethers } from 'ethers';
-import SupplyChainContract from '../../contract/SupplyChain.json'; // Replace with your contract's ABI JSON file
-import CustomButton from '../../components/CustomButton'; // Custom button component
-import FormField from '../../components/FormField'; // Custom form field component
+import SupplyChainContract from '../../contract/SupplyChain.json';
+import SubmitButton from '../../components/SubmitButton'; 
+import FormField from '../../components/FormField';
 
 const projectId = "1e17a2872b93b5b42a336585c052e9ff";
-const contractAddress = "0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6"; // Replace with your contract address
+const contractAddress = "0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6";
 
 const providerMetadata = {
   name: 'YOUR_PROJECT_NAME',
@@ -29,12 +35,12 @@ const CreateProductScreen = () => {
 
   const handleCreateProduct = async () => {
     try {
-      const etherProvider = new ethers.providers.Web3Provider(provider);
-      const signer = etherProvider.getSigner();
+      const etherprovider = new ethers.providers.Web3Provider(provider);
+      const signer = etherprovider.getSigner();
       const contract = new ethers.Contract(contractAddress, SupplyChainContract.abi, signer);
 
       const tx = await contract.addProduct(
-        ethers.utils.parseUnits(productId, 0), 
+        ethers.utils.parseUnits(productId, 0),
         productName,
         companyName,
         location
@@ -42,95 +48,95 @@ const CreateProductScreen = () => {
 
       await tx.wait();
       Alert.alert('Success', 'Product created successfully!');
-      resetForm();
+      
+      // Reset form fields
+      setProductId('');
+      setProductName('');
+      setCompanyName('');
+      setLocation('');
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'An error occurred while creating the product. Please try again.');
     }
   };
 
-  const resetForm = () => {
-    setProductId('');
-    setProductName('');
-    setCompanyName('');
-    setLocation('');
-  };
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Create Product</Text>
-      <Text style={styles.subTitle}>Fill in the details below to add a product to the supply chain.</Text>
+    <View style={styles.container}>
+      {/* Background Image */}
+      <Image source={require('../../assets/images/bg.png')} style={styles.backgroundImage} />
       
-      <FormField
-        placeholder="Product ID"
-        value={productId}
-        onChangeText={setProductId}
-        keyboardType="numeric"
-        style={styles.formField}
-      />
-      
-      <FormField
-        placeholder="Product Name"
-        value={productName}
-        onChangeText={setProductName}
-        style={styles.formField}
-      />
-      
-      <FormField
-        placeholder="Company Name"
-        value={companyName}
-        onChangeText={setCompanyName}
-        style={styles.formField}
-      />
-      
-      <FormField
-        placeholder="Location"
-        value={location}
-        onChangeText={setLocation}
-        style={styles.formField}
-      />
+      {/* Form Container */}
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>Create a New Product</Text>
 
-      <CustomButton 
-        title="Create Product" 
-        onPress={handleCreateProduct} 
-        style={styles.button} 
-      />
-      
+        <FormField
+          placeholder="Product ID"
+          value={productId}
+          onChangeText={setProductId}
+          keyboardType="numeric"
+        />
+        <FormField
+          placeholder="Product Name"
+          value={productName}
+          onChangeText={setProductName}
+        />
+        <FormField
+          placeholder="Company Name"
+          value={companyName}
+          onChangeText={setCompanyName}
+        />
+        <FormField
+          placeholder="Location"
+          value={location}
+          onChangeText={setLocation}
+        />
+
+        <View style={styles.buttonContainer}>
+          <SubmitButton
+            title="Create Product"
+            handlePress={handleCreateProduct}
+            isLoading={false}
+            disabled={!productId || !productName || !companyName || !location}
+          />
+        </View>
+      </View>
+
       <WalletConnectModal projectId={projectId} providerMetadata={providerMetadata} />
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '120%', // Increase the height to cover more of the screen
+    resizeMode: 'cover', // Cover the area without stretching
+  },
+  formContainer: {
+    flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#ffffff', // Set background to white
+    marginTop: '30%', // Adjust margin to position the form over the image
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent white background
+    borderRadius: 10, // Rounded corners
+    elevation: 5, // Shadow effect for elevation
   },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
+    fontSize: 32,
+    fontFamily: 'Poppins-Medium',
+    color: '#70260F',
     textAlign: 'center',
-    color: '#333333', // Darker text color for contrast
-    marginBottom: 10,
+    marginBottom: 20,
   },
-  subTitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#666666', // Light gray text for subtitle
-    marginBottom: 30, // Spacing before form fields
-  },
-  formField: {
-    marginBottom: 20, // Increased margin between form fields
-  },
-  button: {
-    paddingTop:40,
-    marginTop: 50, // Increased margin between "Location" and "Create Product" button
-    backgroundColor: '#007bff', // Bright primary color for button
-    paddingVertical: 14,
-    borderRadius: 100,
-    elevation: 3, // Adds shadow effect on Android
+  buttonContainer: {
+    marginTop: 30,
   },
 });
 

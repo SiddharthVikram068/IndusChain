@@ -1,11 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import {
-  WalletConnectModal,
-  useWalletConnectModal,
-} from '@walletconnect/modal-react-native';
-
-import { router } from 'expo-router';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
+import Lottie from 'lottie-react-native';
+import DisplayButton from '../../components/DisplayButton'; // Import the new component
 
 // Define your project ID and provider metadata
 const projectId = "1e17a2872b93b5b42a336585c052e9ff"; // Your WalletConnect project ID
@@ -26,29 +23,36 @@ const WalletConnectionPage = () => {
   const handleConnection = () => {
     if (!isConnected) {
       open(); // Open the wallet connect modal
-      router.replace('/scan');
+    } else {
+      router.replace('/scan'); // Navigate to the scan page if already connected
     }
-    router.replace('/scan');
   };
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        source={{ uri: 'https://your-project-logo.com/' }} // Replace with your logo URL
-        style={styles.logo}
-      /> */}
-      <Text style={styles.title}>Connect Your Wallet</Text>
-      <Text style={styles.description}>
-        Please connect your wallet to access all features of the CargoChain application.
-      </Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleConnection}
-      >
-        <Text style={styles.buttonText}>
-          {isConnected ? `Connected: ${address}` : 'Connect Wallet'}
+      <View style={styles.card}>
+        <Lottie 
+          source={require('../../assets/videos/wallet.json')} // Path to your Lottie file
+          autoPlay
+          loop
+          style={styles.animation}
+        />
+        <Text style={styles.title}>Connect Your Wallet</Text>
+        <Text style={styles.description}>
+          Please connect your wallet to access all features of the CargoChain application.
         </Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleConnection}>
+          <Text style={styles.buttonText}>
+            {isConnected ? 'Connected!' : 'Connect Wallet'}
+          </Text>
+        </TouchableOpacity>
+        
+        {/* Display connected address using the DisplayButton component */}
+        {isConnected && (
+          <DisplayButton address={address} />
+        )}
+      </View>
+
       <WalletConnectModal
         projectId={projectId}
         providerMetadata={providerMetadata}
@@ -62,13 +66,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ffffff',
-    padding: 20,
+    backgroundColor: '#f5f5f5', // Light background color
   },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 30,
+  card: {
+    width: '90%',
+    maxWidth: 400,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 20,
+    elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  animation: {
+    width: '100%',
+    height: 150, // Adjust height as needed
+    marginBottom: 20,
   },
   title: {
     fontSize: 28,

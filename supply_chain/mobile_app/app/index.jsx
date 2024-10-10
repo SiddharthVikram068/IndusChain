@@ -46,7 +46,7 @@ export default function Component() {
               textColor="#000000"  // Black text for Register
             />
           </View>
-          {/* <Link href="/(tabs)/home">hello</Link> */}
+          <Link href="/(tabs)/home">hello</Link>
 
           {/* New Buttons for Wallet Navigation */}
           <View style={styles.buttonContainer}>
