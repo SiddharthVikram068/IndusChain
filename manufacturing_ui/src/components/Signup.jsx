@@ -13,42 +13,60 @@ export const Signup = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Handle signup function
-  const handleSignup = async (e) => {
-      e.preventDefault();
+// Handle signup function
+const handleSignup = async (e) => {
+    e.preventDefault();
 
-      // Check if passwords match
-      if (password !== confirmPassword) {
-          setError("Passwords don't match");
-          return;
-      }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        setError("Passwords don't match");
+        return;
+    }
 
-      try {
-          const response = await axios.post('https://backend-server-induschain.onrender.com/api/register', {
-              email: email,
-              password: password,
-              role: role
-          });
-          setSuccess('User registered successfully! Redirecting to login...');
-          setError('');
-          console.log('Token:', response.data.token); // Store this token if needed
+    try {
+        // First request to register the user and get the token
+        const signupResponse = await axios.post('https://backend-server-induschain.onrender.com/api/register', {
+            email: email,
+            password: password,
+            role: role
+        });
 
-          // Redirect to login page after successful signup
-          setTimeout(() => {
-              if(role == "OWNER"){
-                window.location.href = '/owner/dash';
+        setSuccess('User registered successfully! Redirecting to dashboard...');
+        setError('');
 
-              }
-              else{
-                window.location.href = '/user/dash';
-              }
-              
-          }, 2000); // Adjust the delay as needed
-      } catch (error) {
-          setError(error.toString());
-      }
-  };
+        // Store the JWT token in local storage
+        localStorage.setItem('token', signupResponse.data.token);
+        console.log('Token:', signupResponse.data.token);
 
+        // Fetch protected route to decode user role from the backend
+        try {
+            const protectedResponse = await axios.get('https://backend-server-induschain.onrender.com/api/protected', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            // Extract the role from the response, assuming the format is 'Hello, ROLE'
+            const extractedRole = protectedResponse.data.split(', ')[1];
+            console.log('Extracted role:', extractedRole);
+
+            // Redirect based on the extracted role
+            setTimeout(() => {
+                if (extractedRole === "OWNER") {
+                    window.location.href = '/owner/dash';
+                } else {
+                    window.location.href = '/user/dash';
+                }
+            }, 5000); // Adjust the delay as needed
+
+        } catch (error) {
+            setError('Error fetching protected data: ' + error.toString());
+        }
+
+    } catch (error) {
+        setError('Signup failed: ' + error.toString());
+    }
+};
 
   return (
     <div>
