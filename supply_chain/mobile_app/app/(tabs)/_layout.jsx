@@ -1,8 +1,11 @@
-import { View, Text, Image } from 'react-native';
-import React from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { Tabs } from 'expo-router';
 import { icons } from '../../constants';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
+// TabIcon component for individual tab rendering
 const TabIcon = ({ icon, color, name, focused }) => {
     return (
         <View className="items-center justify-center">
@@ -16,12 +19,12 @@ const TabIcon = ({ icon, color, name, focused }) => {
                     marginBottom: 4, // Adjust spacing between icon and text
                 }}
             />
-            
             <Text
                 style={{
                     fontSize: 11,  // Reduced font size for a more compact look
                     color: focused ? color : '#7f8c8d', // Softer color for inactive tabs
                     fontWeight: focused ? '600' : '400', // Bold for active tab
+                    fontFamily: 'Poppins-Regular', // Use custom font for all text
                 }}
             >
                 {name}
@@ -30,15 +33,33 @@ const TabIcon = ({ icon, color, name, focused }) => {
     );
 };
 
-
 const TabsLayout = () => {
+    const [fontLoaded, setFontLoaded] = useState(false);
+
+    // Load custom fonts
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../../assets/fonts/Poppins-Bold.ttf'),
+            'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
+        });
+        setFontLoaded(true);
+    };
+
+    useEffect(() => {
+        loadFonts();
+    }, []);
+
+    if (!fontLoaded) {
+        return <AppLoading />;
+    }
+
     return (
         <>
             <Tabs
                 screenOptions={{
                     tabBarShowLabel: false, // Hide default labels
-                    tabBarActiveTintColor:'#C3190B',
-                    tabBarInactiveTintColor:'#00eeff',
+                    tabBarActiveTintColor: '#C3190B',
+                    tabBarInactiveTintColor: '#00eeff',
                     tabBarStyle: {
                         backgroundColor: '#fdfdfd', // Lighter background color for a modern look
                         height: 55, // Reduced height for a compact design
@@ -52,7 +73,6 @@ const TabsLayout = () => {
                         shadowRadius: 4,
                         elevation: 0,  // For Android shadow
                         paddingBottom: 3,  // Adjusted spacing for better alignment
-
                     },
                 }}
             >
@@ -85,8 +105,6 @@ const TabsLayout = () => {
                             />
                         ),
                     }}
-
-
                 />
                 <Tabs.Screen
                     name="productDetails"
