@@ -27,13 +27,13 @@ function App() {
             </div>
           </div>
           <ul className="nav__links" id="nav-links">
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
             <li><a href="#Home">Home</a></li>
             <li><a href="#About">About</a></li>
             <li><a href="#Resources">Resources</a></li>
             <li><a href="#Updates">Updates</a></li>
             <li><a href="#Contact">Contact</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/signup">Signup</a></li>
           </ul>
         </nav>
         <div className="section__container header__container" id="Home">
