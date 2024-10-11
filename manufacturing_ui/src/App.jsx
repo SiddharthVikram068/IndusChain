@@ -32,6 +32,8 @@ function App() {
             <li><a href="#Resources">Resources</a></li>
             <li><a href="#Updates">Updates</a></li>
             <li><a href="#Contact">Contact</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
           </ul>
         </nav>
         <div className="section__container header__container" id="Home">
