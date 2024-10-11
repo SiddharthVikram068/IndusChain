@@ -30,10 +30,20 @@ def main():
     # Predicting failure
     failure_pred = rfc.predict([user_input])
 
-    if failure_pred[0] == 1:
-        print("Prediction: Failure")
-    else:
-        print("Prediction: No Failure")
+    # failure_pred[0] can be 0,1,2,3,4,5 , where categories = ['No Failure', 'Heat Dissipation Failure', 'Power Failure', 'Overstrain Failure', 'Tool Wear Failure', 'Random Failures']
+
+    if failure_pred[0] == 0:
+        print("No Failure")
+    elif failure_pred[0] == 1:
+        print("Heat Dissipation Failure")
+    elif failure_pred[0] == 2:
+        print("Power Failure")
+    elif failure_pred[0] == 3:
+        print("Overstrain Failure")
+    elif failure_pred[0] == 4:
+        print("Tool Wear Failure")
+    elif failure_pred[0] == 5:
+        print("Random Failures")
 
 if __name__ == "__main__":
     main()
