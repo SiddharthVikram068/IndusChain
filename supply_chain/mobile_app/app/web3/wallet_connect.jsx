@@ -51,13 +51,13 @@ const WalletConnectionPage = () => {
         </Text>
 
         {/* Use WalletButton instead of TouchableOpacity */}
-        <WalletButton onPress={handleConnection} title={isConnected ? 'Connected!' : 'Connect Wallet'} />
+        <WalletButton onPress={handleConnection} title={isConnected ? 'Continue!' : 'Connect Wallet'} />
 
         {/* Display connected address using the DisplayButton component inside a curtain */}
         {isConnected && (
           <TouchableOpacity onPress={toggleAddressVisibility} style={styles.curtain}>
-            <Text style={styles.curtainText}>Show Address</Text>
-            {showAddress && <DisplayButton address={address} />}
+            <Text style={styles.curtainText}>Wallet Connected</Text>
+            { <DisplayButton address={address} />}
           </TouchableOpacity>
         )}
       </View>
