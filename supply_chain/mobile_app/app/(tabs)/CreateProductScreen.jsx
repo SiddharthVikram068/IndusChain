@@ -63,6 +63,7 @@ const CreateProductScreen = () => {
   return (
     <View style={styles.container}>
       {/* Background Image */}
+      
       <Image source={require('../../assets/images/bg.png')} style={styles.backgroundImage} />
       
       {/* Form Container */}
