@@ -26,7 +26,7 @@ export const Login = () => {
 
             // Store the JWT token in local storage
             localStorage.setItem('token', loginResponse.data.token);
-
+            localStorage.setItem('email', email);
             // Fetch protected route to decode user role from the backend
             try {
                 const protectedResponse = await axios.get('https://backend-server-induschain.onrender.com/api/protected', {
@@ -38,7 +38,7 @@ export const Login = () => {
                 // Extract the role from the response, assuming the format is 'Hello, ROLE'
                 const role = protectedResponse.data.split(', ')[1];
                 console.log('Extracted role:', role);
-
+                localStorage.setItem('role', role);
                 // Redirect based on the role
                 setTimeout(() => {
                     if (role === "OWNER") {
