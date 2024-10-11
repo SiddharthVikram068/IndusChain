@@ -22,17 +22,22 @@ def predict_for_datetime(dt,FEATURES,model):
     return prediction[0]  # Return the prediction value
 
 
-FEATURES = ['dayofyear', 'hour', 'dayofweek', 'quarter', 'month', 'year']
+def main():
 
-# Load the model
-model_file = 'model.joblib'
-energy_model = joblib.load(model_file)
-print("Model loaded successfully.")
+    FEATURES = ['dayofyear', 'hour', 'dayofweek', 'quarter', 'month', 'year']
 
-# User input for prediction
-prediction_datetime = input("Enter the datetime for prediction (YYYY-MM-DD HH:MM:SS): ")
+    # Load the model
+    model_file = 'model.joblib'
+    energy_model = joblib.load(model_file)
+    print("Model loaded successfully.")
 
-# Make a prediction
-prediction = predict_for_datetime(prediction_datetime,FEATURES,energy_model)
+    # User input for prediction
+    prediction_datetime = input("Enter the datetime for prediction (YYYY-MM-DD HH:MM:SS): ")
 
-print(f"Predicted energy for {prediction_datetime}: {prediction:.2f}")
+    # Make a prediction
+    prediction = predict_for_datetime(prediction_datetime,FEATURES,energy_model)
+
+    print(f"Predicted energy for {prediction_datetime}: {prediction:.2f}")
+
+if __name__ == "__main__":
+    main()
