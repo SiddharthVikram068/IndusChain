@@ -14,7 +14,10 @@ const Sidebar_user = () => {
             <Link to="/user/info">Plant Information </Link>
           </li>
           <li className="p-4 hover:bg-orange-500">
-            Logout
+            <Link to="/">Logout</Link> 
+          </li>
+          <li className="p-4 hover:bg-orange-500">
+            Add device(under development)
           </li>
         </ul>
       </nav>

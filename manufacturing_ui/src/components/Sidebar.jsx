@@ -1,20 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
-    <div className="bg-orange-600 text-white w-64 p-6 fixed left-0 top-0 h-full">
-      <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
-      <ul>
-        <li className="mb-4 text-lg hover:text-orange-200 transition duration-300">
-          Home
-        </li>
-        <li className="mb-4 text-lg hover:text-orange-200 transition duration-300">
-          Tasks
-        </li>
-        <li className="mb-4 text-lg hover:text-orange-200 transition duration-300">
-          Statistics
-        </li>
-      </ul>
+    <div className="w-64 h-screen bg-orange-600 text-white flex flex-col">
+      <h1 className="text-2xl font-bold p-4">Owner Dashboard</h1>
+      <nav className="flex-grow">
+        <ul>
+          <li className="p-4 hover:bg-orange-500">
+           <Link to="/owner/dash">Dashboard</Link> 
+          </li>
+          <li className="p-4 hover:bg-orange-500">
+            <Link to="/owner/employ">Plant employees</Link> 
+          </li>
+          <li className="p-4 hover:bg-orange-500">
+            <Link to="/">Logout </Link> 
+          </li>
+          <li className="p-4 hover:bg-orange-500">
+            Report(under development)
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };

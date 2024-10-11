@@ -6,6 +6,7 @@ import SignupForm from './pages/SignupForm';
 import OwnerDashboard from './pages/OwnerDashboard';
 import UserDashboard from './pages/UserDashboard';
 import PlantInfoPage from './pages/PlantInfoPage';
+import PlantEmployeesPage from './pages/PlantEmployeesPage';
 
 const Router = () => {
   return (
@@ -16,8 +17,10 @@ const Router = () => {
         <Route path="/login" element={<LoginForm />}/>
         <Route path="/signup" element={<SignupForm />}/>
         <Route path="/owner/dash" element={<OwnerDashboard />}/>
+        <Route path="/owner/employ" element={<PlantEmployeesPage />}/>
         <Route path="/user/dash" element={<UserDashboard />}/>
         <Route path="/user/info" element={<PlantInfoPage />}/>
+
     </Routes>
     </>
     
