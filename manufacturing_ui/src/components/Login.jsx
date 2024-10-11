@@ -12,31 +12,51 @@ export const Login = () => {
     const [success, setSuccess] = useState('');
 
     const handleLogin = async (e) => {
-      e.preventDefault();
+        e.preventDefault();
 
-      try {
-          const response = await axios.post('https://backend-server-induschain.onrender.com/api/login', {
-              email,
-              password
-          });
-          setSuccess('Login successful!');
-          setError('');
-          // Store the JWT token in local storage
-          localStorage.setItem('token', response.data.token);
-          // Redirect to home page after successful login
-          const role = response.data.role;
+        try {
+            // First request to login and get the token
+            const loginResponse = await axios.post('https://backend-server-induschain.onrender.com/api/login', {
+                email,
+                password
+            });
 
-          if(role == "OWNER"){
-            window.location.href = '/owner/dash';
-          }
-          else{
-            window.location.href = '/user/dash';
-          }
+            setSuccess('Login successful!');
+            setError('');
 
-      } catch (error) {
-          setError(error.toString());
-      }
+            // Store the JWT token in local storage
+            localStorage.setItem('token', loginResponse.data.token);
+
+            // Fetch protected route to decode user role from the backend
+            try {
+                const protectedResponse = await axios.get('https://backend-server-induschain.onrender.com/api/protected', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                // Extract the role from the response, assuming the format is 'Hello, ROLE'
+                const role = protectedResponse.data.split(', ')[1];
+                console.log('Extracted role:', role);
+
+                // Redirect based on the role
+                setTimeout(() => {
+                    if (role === "OWNER") {
+                        window.location.href = '/owner/dash';
+                    } else {
+                        window.location.href = '/user/dash';
+                    }
+                }, 5000); // Delay can be adjusted as necessary
+
+            } catch (error) {
+                setError('Error fetching protected data: ' + error.toString());
+            }
+
+        } catch (error) {
+            setError('Login failed: ' + error.toString());
+        }
     };
+
 
     return (
         <div>
