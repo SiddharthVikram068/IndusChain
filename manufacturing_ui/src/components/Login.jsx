@@ -25,14 +25,14 @@ export const Login = () => {
           localStorage.setItem('token', response.data.token);
           // Redirect to home page after successful login
           const role = response.data.role;
-          
+
           if(role == "OWNER"){
             window.location.href = '/owner/dash';
           }
           else{
             window.location.href = '/user/dash';
           }
-          
+
       } catch (error) {
           setError(error.toString());
       }
