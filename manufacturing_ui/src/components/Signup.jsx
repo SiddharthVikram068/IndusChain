@@ -38,6 +38,14 @@ const handleSignup = async (e) => {
         localStorage.setItem('token', signupResponse.data.token);
         console.log('Token:', signupResponse.data.token);
 
+
+        // After getting the role and email from the backend response
+        localStorage.setItem('role', role);  // Store role in localStorage
+        localStorage.setItem('email', email);  // Store email in localStorage
+
+
+
+
         // Fetch protected route to decode user role from the backend
         try {
             const protectedResponse = await axios.get('https://backend-server-induschain.onrender.com/api/protected', {
