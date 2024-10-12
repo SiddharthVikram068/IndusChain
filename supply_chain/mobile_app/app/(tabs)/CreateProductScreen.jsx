@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Alert,
   Image,
+  ActivityIndicator, // Import ActivityIndicator for loading spinner
 } from 'react-native';
 import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
 import { ethers } from 'ethers';
@@ -31,10 +32,12 @@ const CreateProductScreen = () => {
   const [productName, setProductName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [location, setLocation] = useState('');
+  const [loading, setLoading] = useState(false); // State to track loading
   const { provider } = useWalletConnectModal();
 
   const handleCreateProduct = async () => {
     try {
+      setLoading(true); // Start loading
       const etherprovider = new ethers.providers.Web3Provider(provider);
       const signer = etherprovider.getSigner();
       const contract = new ethers.Contract(contractAddress, SupplyChainContract.abi, signer);
@@ -57,13 +60,14 @@ const CreateProductScreen = () => {
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'An error occurred while creating the product. Please try again.');
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
   return (
     <View style={styles.container}>
       {/* Background Image */}
-      
       <Image source={require('../../assets/images/bg.png')} style={styles.backgroundImage} />
       
       {/* Form Container */}
@@ -93,12 +97,15 @@ const CreateProductScreen = () => {
         />
 
         <View style={styles.buttonContainer}>
-          <SubmitButton
-            title="Create Product"
-            handlePress={handleCreateProduct}
-            isLoading={false}
-            disabled={!productId || !productName || !companyName || !location}
-          />
+          {loading ? ( // Show loading spinner if loading
+            <ActivityIndicator size="large" color="#70260F" />
+          ) : (
+            <SubmitButton
+              title="Create Product"
+              handlePress={handleCreateProduct}
+              disabled={!productId || !productName || !companyName || !location}
+            />
+          )}
         </View>
       </View>
 
@@ -117,17 +124,17 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: '120%', // Increase the height to cover more of the screen
-    resizeMode: 'cover', // Cover the area without stretching
+    height: '120%', 
+    resizeMode: 'cover',
   },
   formContainer: {
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    marginTop: '30%', // Adjust margin to position the form over the image
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent white background
-    borderRadius: 10, // Rounded corners
-    elevation: 5, // Shadow effect for elevation
+    marginTop: '30%',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 10,
+    elevation: 5,
   },
   title: {
     fontSize: 32,

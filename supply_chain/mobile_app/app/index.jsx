@@ -127,14 +127,14 @@ const styles = StyleSheet.create({
   signInButton: {
     backgroundColor: '#000000',
     paddingVertical: 15,
-    borderRadius: 40,
+    borderRadius: 20,
     flex: 1,
     marginHorizontal: 5,
   },
   registerButton: {
     backgroundColor: '#70260F',
     paddingVertical: 15,
-    borderRadius: 40,
+    borderRadius: 20,
     flex: 1,
     marginHorizontal: 5,
   },

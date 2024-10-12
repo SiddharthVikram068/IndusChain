@@ -47,7 +47,7 @@ const Scan = () => {
         <View style={styles.cameraWrapper}>
           <CameraView
             style={styles.cameraStyle}
-            onBarcodeScanned={scannedData ? undefined : handleBarCodeScanned}
+            onBarcodeScanned={scannedData ? handleBarCodeScanned : handleBarCodeScanned}
             barcodeScannerSettings={{
               barcodeTypes: ["qr", "pdf417"],
             }}
