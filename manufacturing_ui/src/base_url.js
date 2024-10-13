@@ -1,0 +1,1 @@
+export const BASE_URL = 'https://backend-server-induschain-z3rw.onrender.com';

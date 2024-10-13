@@ -1,27 +1,15 @@
-from flask import Flask, request, jsonify
-import joblib
 import pandas as pd
 import numpy as np
-from datetime import datetime
+import joblib
 
-# Create Flask app
-app = Flask(__name__)
 
-# Load the saved model
-model_filename = 'energy_prediction_model.pkl'
-model = joblib.load(model_filename)
 
-# Example feature columns (these should match the model's expected features)
-FEATURES = ['dayofyear', 'hour', 'dayofweek', 'quarter', 'month', 'year', 'lag_1', 'lag_24', 'rolling_mean', 'rolling_std']
-
-# Example data for lag and rolling stats (replace with actual data loading logic)
-train_data = pd.read_csv('./processed_train_data.csv')
-train_data['datetime'] = pd.to_datetime(train_data['datetime'])
-train_data = train_data.set_index('datetime')
-
-# Helper function to create features for a given datetime
-def create_features_for_datetime(dt):
+def predict_for_datetime(dt,FEATURES,model):
+    """Predict energy for a specific datetime."""
+    # Create a DataFrame for the specific datetime
     df = pd.DataFrame(index=[pd.to_datetime(dt)])
+
+    # Create time-based features for the DataFrame
     df['hour'] = df.index.hour
     df['dayofweek'] = df.index.dayofweek
     df['quarter'] = df.index.quarter
@@ -29,39 +17,27 @@ def create_features_for_datetime(dt):
     df['year'] = df.index.year
     df['dayofyear'] = df.index.dayofyear
 
-    # Lag features: use the last known values from the train data
-    df['lag_1'] = train_data['energy'].iloc[-1]  # Use the last known energy value
-    df['lag_24'] = train_data['energy'].iloc[-24]  # Use the energy value from 24 hours ago
+    # Predict using the trained model
+    prediction = model.predict(df[FEATURES])
+    return prediction[0]  # Return the prediction value
 
-    # Rolling features (replace with real data)
-    df['rolling_mean'] = train_data['energy'].rolling(window=24).mean().iloc[-1]
-    df['rolling_std'] = train_data['energy'].rolling(window=24).std().iloc[-1]
 
-    return df[FEATURES]
+def main():
 
-# Route for predicting energy for a specific datetime
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        # Get JSON data from the request
-        data = request.json
-        dt = data['datetime']
+    FEATURES = ['dayofyear', 'hour', 'dayofweek', 'quarter', 'month', 'year']
 
-        # Create features for the given datetime
-        df = create_features_for_datetime(dt)
+    # Load the model
+    model_file = 'model.joblib'
+    energy_model = joblib.load(model_file)
+    print("Model loaded successfully.")
 
-        # Predict energy using the loaded model
-        prediction = model.predict(df)
+    # User input for prediction
+    prediction_datetime = input("Enter the datetime for prediction (YYYY-MM-DD HH:MM:SS): ")
 
-        return jsonify({'datetime': dt, 'predicted_energy': prediction[0]})
+    # Make a prediction
+    prediction = predict_for_datetime(prediction_datetime,FEATURES,energy_model)
 
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+    print(f"Predicted energy for {prediction_datetime}: {prediction:.2f}")
 
-# Route for testing if the app is working
-@app.route('/test', methods=['GET'])
-def test():
-    return "Energy Prediction Model API is working!", 200
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    main()

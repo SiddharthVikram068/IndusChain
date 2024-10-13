@@ -1,22 +1,40 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
-  return (
-    <div className="bg-orange-600 text-white w-64 p-6 fixed left-0 top-0 h-full">
-      <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
-      <ul>
-        <li className="mb-4 text-lg hover:text-orange-200 transition duration-300">
-          Home
-        </li>
-        <li className="mb-4 text-lg hover:text-orange-200 transition duration-300">
-          Tasks
-        </li>
-        <li className="mb-4 text-lg hover:text-orange-200 transition duration-300">
-          Statistics
-        </li>
-      </ul>
-    </div>
-  );
+
+    // Function to handle logout
+    const handleLogout = () => {
+        // Remove role, email, and token from localStorage
+        localStorage.removeItem('role');
+        localStorage.removeItem('email');
+        localStorage.removeItem('token');
+
+        // Redirect to login page after logout
+        window.location.href = '/';
+    };
+
+    return (
+        <div className="w-64 min-h-screen bg-orange-600 text-white flex flex-col relative z-10">
+            <h1 className="text-2xl font-bold p-4">Owner Dashboard</h1>
+              <ul className="space-y-4 mt-4">
+                <li className="p-4 hover:bg-orange-500">
+                  <Link to="/owner/dash">Dashboard</Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                  <Link to="/owner/employ">Plant Employees</Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                  <button onClick={handleLogout} className="w-full text-left">
+                      Logout
+                  </button>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                    Report (under development)
+                </li>
+              </ul>
+        </div>
+    );
 };
 
 export default Sidebar;

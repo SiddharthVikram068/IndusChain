@@ -250,6 +250,10 @@ nav {
   line-height: 2rem;
 }
 
+.bold-link {
+    font-weight: 600;
+}
+
 .faq__container {
   display: grid;
   gap: 2rem;
@@ -479,7 +483,7 @@ nav {
   gap: 1rem;
 }
 
-.footer__socials {
+/* .footer__socials {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -496,7 +500,39 @@ nav {
 .footer__socials a:hover {
   color: var(--white);
   background-color: var(--primary-color);
+} */
+
+.footer__socials {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Increased gap for better spacing */
 }
+
+.footer__socials a {
+    padding: 10px 12px; /* Increased padding for better click area */
+    font-size: 1.5rem; /* Adjust the size as needed */
+    color: var(--primary-color);
+    background-color: var(--extra-light);
+    border-radius: 50%; /* Circular background */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.footer__socials a:hover {
+    color: var(--white);
+    background-color: var(--primary-color);
+    transform: scale(1.1); /* Scale effect on hover */
+}
+
+  /* Optional: Add a box shadow for depth */
+.footer__socials a {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer__socials a:active {
+    transform: scale(1); /* Reset scale on click */
+}
+
+
 
 .footer__bar {
   padding: 1rem;
