@@ -1,9 +1,10 @@
-#define RED_LED_PIN 22
-#define GREEN_LED_PIN 23
+#define RED_LED_PIN 23
+#define GREEN_LED_PIN 21
 
 void setup() {
   // Initialize serial communication at 115200 baud rate
   Serial.begin(115200);
+  Serial.setTimeout(2000);
 
   // Initialize the GPIO pins for LEDs
   pinMode(RED_LED_PIN, OUTPUT);
@@ -12,6 +13,10 @@ void setup() {
   // Start with LEDs off
   digitalWrite(RED_LED_PIN, LOW);
   digitalWrite(GREEN_LED_PIN, LOW);
+  digitalWrite(RED_LED_PIN, HIGH);  // Turn ON Red LED
+delay(2000);  // Keep it on for 2 seconds
+digitalWrite(RED_LED_PIN, LOW);   // Turn it OFF after 2 seconds
+
 }
 
 void loop() {
@@ -20,6 +25,7 @@ void loop() {
     String data = Serial.readString();  // Read the incoming data as a string
     Serial.print("Received data: ");
     Serial.println(data);  // Print the received data for debugging
+    data.trim(); 
 
     // Check for specific data and turn on LEDs accordingly
     if (data == "red") {

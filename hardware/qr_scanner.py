@@ -2,11 +2,14 @@ import cv2
 from pyzbar.pyzbar import decode
 import serial
 import time
-from contract_interact import authenticate_company_product  # Importing the authenticate function from auth.py
+from contract_interact import authenticate_company_product  # Importing the authenticate function
 
 # Set up serial communication with ESP32
-esp32 = serial.Serial('COM6', 9600, timeout=1)  # Adjust COM port to your setup
-time.sleep(2)  # Allow time for ESP32 to initialize
+esp32 = serial.Serial('COM6', 115200, timeout=2)  # Adjusted to match ESP32
+time.sleep(2)
+ # Adjust COM port to your setup
+esp32.flush()
+  # Allow time for ESP32 to initialize
 
 def scan_qr_code():
     cap = cv2.VideoCapture(1)  # Try adjusting this index if needed
@@ -15,7 +18,7 @@ def scan_qr_code():
         print("Error: Could not open the camera.")
         return
 
-    manufacturer = "MIT"  # Hardcoded manufacturing date
+    manufacturer = "MIT"  # Hardcoded manufacturer
 
     try:
         while True:
@@ -31,13 +34,25 @@ def scan_qr_code():
                 qr_data = obj.data.decode("utf-8")
                 print(f"QR Code detected: {qr_data}")
 
-                # Authenticate the product using qr_data (product_id) and manufacturing_date
-                if authenticate_company_product(qr_data, manufacturer):
-                    esp32.write(b'1')  # Signal green light
-                    print("Authentication successful: Green light")
-                else:
-                    esp32.write(b'0')  # Signal red light
-                    print("Authentication failed: Red light")
+                try:
+                    # Convert qr_data to an integer as required by the contract
+                    product_id = int(qr_data)
+
+                    # Authenticate the product using product_id (as uint256) and manufacturer
+                    if authenticate_company_product(product_id, manufacturer):  # Using product_id
+                        esp32.write(b'green\n')  # Signal green light
+                        print("Authentication successful: Green light")
+                    else:
+                        esp32.write(b'red\n')  # Signal red light
+                        print("Authentication failed: Red light")
+
+                    # Receive response from ESP32
+                    response = esp32.readline().decode('utf-8').strip()
+                    print(f"ESP32 Response: {response}")
+
+                except ValueError:
+                    print(f"Error: QR data '{qr_data}' is not a valid product ID (integer).")
+                    esp32.write(b'red\n')  # Signal red light for invalid QR code
 
             cv2.imshow("QR Code Scanner", frame)
 
