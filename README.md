@@ -38,7 +38,7 @@ The platform enhances **sustainability and transparency** by combining blockchai
 ### 2. Energy Forecasting  
 - **Prediction based on time context data** gives out near accurate predictions for future energy use by a manufacturing plant. 
 
-### 4. CargoChain – Product Verification on the Supply Chain  
+### 3. CargoChain – Product Verification on the Supply Chain  
 - **Tracks product origin** and movement to ensure authenticity.  
 - Utilizes **blockchain-based smart contracts** to validate product origins.  
 - Ensures **transparency in supply chain transactions** from start to finish.
