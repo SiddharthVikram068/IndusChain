@@ -145,7 +145,7 @@ def generate_3d_printer_dataset(num_entries=10000):
         'failure_type': [failure_types[failure] for failure in machine_failures]  # Numeric failure type
     })
 
-
+# Funtion to generate Conveyor Belt Dataset
 def generate_conveyor_belt_dataset(num_entries=10000):
     np.random.seed(4)
     conveyorID = [f"{i+1}" for i in range(num_entries)]
@@ -181,8 +181,6 @@ def generate_conveyor_belt_dataset(num_entries=10000):
         'ambient_temperature [°C]': ambient_temperature,
         'failure_type': [failure_types[failure] for failure in machine_failures]  # Numeric failure type
     })
-
-
 
 # Example usage
 cnc_dataset = generate_cnc_dataset()
