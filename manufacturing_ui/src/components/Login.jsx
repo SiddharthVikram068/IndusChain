@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { CiUser } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 import axios from 'axios';
+import { BASE_URL } from '../base_url.js'
 
 export const Login = () => {
 
@@ -16,7 +17,8 @@ export const Login = () => {
 
         try {
             // First request to login and get the token
-            const loginResponse = await axios.post('https://backend-server-induschain.onrender.com/api/login', {
+            const loginResponse = await axios.post(`${BASE_URL}/api/login`, {
+            // const loginResponse = await axios.post('https://backend-server-induschain.onrender.com/api/login', {
                 email,
                 password
             });

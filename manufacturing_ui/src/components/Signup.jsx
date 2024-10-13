@@ -3,6 +3,8 @@ import { CiUser } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 import axios from 'axios';
 import { useState } from "react";
+import {BASE_URL} from '../base_url.js'
+
 
 export const Signup = () => {
 
@@ -25,7 +27,9 @@ const handleSignup = async (e) => {
 
     try {
         // First request to register the user and get the token
-        const signupResponse = await axios.post('https://backend-server-induschain.onrender.com/api/register', {
+        console.log('BASE_URL:', `${BASE_URL}/api/register`);
+        const signupResponse = await axios.post(`${BASE_URL}/api/register`, {
+        // const signupResponse = await axios.post('https://backend-server-induschain.onrender.com/api/register', {
             email: email,
             password: password,
             role: role

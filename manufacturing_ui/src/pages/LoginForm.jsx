@@ -17,7 +17,7 @@ const LoginForm = () => {
                 <Login />
                 <div className="pb-4 text-sm flex items-center justify-between">
                     <p>Don't have an account?</p>
-                    <button className="font-semibold underline">Sign up</button>
+                    <button className="font-semibold underline" onClick={() => window.location.href = '/signup'}>Sign up</button>
                 </div>
                 <div className="flex items-center space-x-4">
                     <hr className="w-full" />
@@ -26,11 +26,11 @@ const LoginForm = () => {
                 </div>
                 <div className="my-4 flex items-center justify-center border border-black rounded-lg space-x-1 p-2">
                     <FaGoogle />
-                    <p>Sign in with Google</p>
+                    <p>Login with Google</p>
                 </div>
                 <div className="flex items-center justify-center border border-black rounded-lg space-x-1 p-2">
                     <FaFacebookF />
-                    <p>Sign in with Facebook</p>
+                    <p>Login with Facebook</p>
                 </div>
             </div>
             <div className="w-1/2 hidden lg:block" style={{ marginTop: '3cm' }}> {/* Changed to 2cm for more space */}

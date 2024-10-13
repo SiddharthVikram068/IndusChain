@@ -20,11 +20,11 @@ const SignupForm = () => {
             <Signup />
             <div className="pb-4 text-sm flex items-center justify-between">
                 <p>Already have an account?</p>
-                <button className="font-semibold underline">Sign in</button>
+                <button className="font-semibold underline" onClick={() => window.location.href = '/login'}>Sign in</button>
             </div>
             <div className="flex items-center space-x-4">
               <hr className="w-full" />
-              <p className="shrink-0">Signup with Others</p>
+              <p className="shrink-0">Sign up with Others</p>
               <hr className="w-full" />
             </div>
             <div className="my-4 flex items-center justify-center border border-black rounded-lg space-x-1 p-2">

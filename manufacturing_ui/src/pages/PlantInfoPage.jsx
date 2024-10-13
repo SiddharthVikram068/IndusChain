@@ -1,6 +1,7 @@
 import React from 'react';
 import Graph from '../components/Graph';
 import Sidebar_user from '../components/SIdebar_user';
+import Tasks from '../components/Tasks';
 
 const PlantInfoPage = () => {
 return (
@@ -16,12 +17,13 @@ return (
                 </div>
 
                 <div className="bg-white p-6 shadow-lg rounded-lg border-2 border-orange-600">
-                    <h3 className="text-xl text-orange-600 mb-4">Faulty Equipment</h3>
+                    {/* <h3 className="text-xl text-orange-600 mb-4">Faulty Equipment</h3>
                     <ul className="list-disc pl-5">
                         <li>Boiler #3 - Overheating</li>
                         <li>Conveyor Belt #2 - Stalled</li>
                         <li>Compressor #5 - Low Pressure</li>
-                    </ul>
+                    </ul> */}
+                    <Tasks />
                 </div>
             </div>
         </div>

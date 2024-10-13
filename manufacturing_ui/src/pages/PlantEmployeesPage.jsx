@@ -1,20 +1,17 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
+import PlantManager from '../components/PlantManager'
 
 const PlantEmployeesPage = () => {
 return (
     <div className="flex min-h-screen bg-gray-100">
-            <Sidebar />
-            <div className="flex-grow">
+        <Sidebar />
+        <div className="flex-grow">
             <div className="p-4">
-                <div className="bg-white shadow-md p-3 rounded-lg border border-orange-500">
-                    <p className="mt-1">Name: Aything</p>
-                    <p>Email: johndoe@example.com</p>
-                    <p>Position: Plant Manager</p>
-                </div>
-            </div>
+                <PlantManager />
             </div>
         </div>
+    </div>
 )
 }
 
