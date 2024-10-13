@@ -250,6 +250,10 @@ nav {
   line-height: 2rem;
 }
 
+.bold-link {
+    font-weight: 600;
+}
+
 .faq__container {
   display: grid;
   gap: 2rem;
