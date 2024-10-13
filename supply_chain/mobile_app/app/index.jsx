@@ -44,11 +44,24 @@ export default function Component() {
               handlePress={() => router.push('/(auth)/sign-up')}
               containerStyles={styles.registerButton}
               textColor="#FFFFFF"
+
             />
           </View>
 
-          <Link href="/(tabs)/home">hello</Link>
-          <Link href="/web3/wallet_connect">wallet</Link>
+
+
+
+
+
+
+
+
+
+
+
+
+           {/* <Link href="/(tabs)/home">hello</Link> */}
+          {/*<Link href="/web3/wallet_connect">wallet</Link> */}
 {/* =======
 >>>>>>> c57b618190d11c388d4b92c52148f20359c8f884 */}
 

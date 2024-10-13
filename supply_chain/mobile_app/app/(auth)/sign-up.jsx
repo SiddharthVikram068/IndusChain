@@ -52,10 +52,10 @@ const SignUp = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ImageBackground
+            {/* <ImageBackground
                 source={require('../../assets/images/bg_1.png')} 
                 style={styles.backgroundImage}
-            >
+            > */}
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <View style={styles.innerContainer}>
                         <Text style={styles.title}>Join The <Text style={styles.brownText}>CargoChain</Text></Text>
@@ -131,7 +131,7 @@ const SignUp = () => {
                         </View>
                     </View>
                 </ScrollView>
-            </ImageBackground>
+            
         </SafeAreaView>
     );
 };
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     scrollView: {
         flexGrow: 1,
         paddingHorizontal: 20,
-        paddingTop: 10,
+        paddingTop: -1,
         paddingBottom: 100,
     },
     innerContainer: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: '#333',
         fontWeight: '600',
-        marginTop: 10,
+        marginTop: 0,
         fontFamily: 'Poppins-SemiBold',
         textAlign: 'center',
         marginBottom: 20,

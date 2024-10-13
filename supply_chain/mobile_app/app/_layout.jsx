@@ -3,6 +3,12 @@ import { Stack, SplashScreen } from 'expo-router';
 import { useFonts } from 'expo-font';
 import GlobalProvider from '../context/globalProvider';
 import 'react-native-gesture-handler';
+import { LogBox, Platform } from 'react-native';
+
+// Disable all log warnings in production
+if (Platform.OS !== 'development') {
+  LogBox.ignoreAllLogs(true); // This will suppress all logs, warnings, and errors in production
+}
 
 SplashScreen.preventAutoHideAsync();
 
