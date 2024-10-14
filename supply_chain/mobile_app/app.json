@@ -14,16 +14,15 @@
     },
     "ios": {
       "supportsTablet": true,
-      "package":"com.supplyChain.indusChain"
+      "package": "com.supplyChain.indusChain"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package":"com.supplyChain.indusChain"
+      "package": "com.supplyChain.indusChain"
     },
-
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -34,6 +33,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "4b0e5d2a-fd4d-43a8-a3e5-f0ac0b087e32"
+      }
     }
   }
 }
