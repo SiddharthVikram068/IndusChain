@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-import threedprint from '../components/threedprint'
+import Threedprint from '../components/threedprint'
 
 const THREEDPRINTAnalysisPage = () => {
 return (
@@ -8,7 +8,7 @@ return (
         <Sidebar />
         <div className="flex-grow">
             <div className="p-4">
-                <threedprint />
+                <Threedprint />
             </div>
         </div>
     </div>

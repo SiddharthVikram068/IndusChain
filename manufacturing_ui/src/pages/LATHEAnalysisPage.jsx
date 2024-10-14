@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-import LATHE from '../components/lathe'
+import Lathe from '../components/lathe'
 
 const LATHEAnalysisPage = () => {
 return (
@@ -8,7 +8,7 @@ return (
         <Sidebar />
         <div className="flex-grow">
             <div className="p-4">
-                <LATHE />
+                <Lathe />
             </div>
         </div>
     </div>

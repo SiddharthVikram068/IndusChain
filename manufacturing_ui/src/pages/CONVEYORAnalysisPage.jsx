@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-import CONVEYOR from '../components/conveyor'
+import Conveyor from '../components/conveyor'
 
 const CONVEYORAnalysisPage = () => {
 return (
@@ -8,7 +8,7 @@ return (
         <Sidebar />
         <div className="flex-grow">
             <div className="p-4">
-                <CONVEYOR />
+                <Conveyor />
             </div>
         </div>
     </div>

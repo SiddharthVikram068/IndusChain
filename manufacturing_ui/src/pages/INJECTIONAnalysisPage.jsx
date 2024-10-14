@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-import INJECTION from '../components/injection'
+import Injection from '../components/injection'
 
 const INJECTIONAnalysisPage = () => {
 return (
@@ -8,7 +8,7 @@ return (
         <Sidebar />
         <div className="flex-grow">
             <div className="p-4">
-                <INJECTION />
+                <Injection />
             </div>
         </div>
     </div>
