@@ -35,7 +35,6 @@ return (
                     <li><a href="#Updates">Updates</a></li>
                     <li><a href="#Contact">Contact</a></li>
 
-                    <li><a href="/machinefailure">Machine Failures</a></li>
 
                 </ul>
             </nav>

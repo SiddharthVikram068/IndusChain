@@ -25,6 +25,21 @@ const Sidebar = () => {
                   <Link to="/owner/employ">Plant Employees</Link>
                 </li>
                 <li className="p-4 hover:bg-orange-500">
+                  <Link to="/cnc">CNC Milling Machine</Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                  <Link to="/injection">Injection Molding Machine</Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                  <Link to="/lathe">Lathe Machine</Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                  <Link to="/3dprint">3D Printer</Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                  <Link to="/conveyor">Conveyor Belt System</Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
                   <button onClick={handleLogout} className="w-full text-left">
                       Logout
                   </button>

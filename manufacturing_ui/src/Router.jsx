@@ -7,8 +7,13 @@ import OwnerDashboard from './pages/OwnerDashboard';
 import UserDashboard from './pages/UserDashboard';
 import PlantInfoPage from './pages/PlantInfoPage';
 import PlantEmployeesPage from './pages/PlantEmployeesPage';
-import MachineFailure from './components/MachineFailure';
 
+
+import CNCAnalysisPage from './pages/CNCAnalysisPage';
+import THREEDPRINTAnalysisPage from './pages/THREEDPRINTAnalysisPage';
+import LATHEAnalysisPage from './pages/LATHEAnalysisPage';
+import INJECTIONAnalysisPage from './pages/INJECTIONAnalysisPage';
+import CONVEYORAnalysisPage from './pages/CONVEYORAnalysisPage';
 
 const Router = () => {
   return (
@@ -22,7 +27,12 @@ const Router = () => {
         <Route path="/owner/employ" element={<PlantEmployeesPage />}/>
         <Route path="/user/dash" element={<UserDashboard />}/>
         <Route path="/user/info" element={<PlantInfoPage />}/>
-        <Route path="/machinefailure" element={<MachineFailure />}/>
+
+        <Route path="/cnc" element={<CNCAnalysisPage />}/>
+        <Route path="/threedprint" element={<THREEDPRINTAnalysisPage />}/>
+        <Route path="/lathe" element={<LATHEAnalysisPage />}/>
+        <Route path="/injection" element={<INJECTIONAnalysisPage />}/>
+        <Route path="/conveyor" element={<CONVEYORAnalysisPage />}/>
 
     </Routes>
     </>
