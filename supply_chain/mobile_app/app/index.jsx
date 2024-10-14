@@ -61,8 +61,8 @@ export default function Component() {
 
 
 
-           <Link href="/(tabs)/home">hello</Link>
-          <Link href="/web3/wallet_connect">wallet</Link>
+           {/* <Link href="/(tabs)/home">hello</Link>
+          <Link href="/web3/wallet_connect">wallet</Link> */}
 {/* =======
 >>>>>>> c57b618190d11c388d4b92c52148f20359c8f884 */}
 
@@ -74,13 +74,9 @@ export default function Component() {
               containerStyles={styles.sendButton}
               textColor="#FFFFFF"
             />
-            <CustomButton
-              title="Receive"
-              handlePress={() => router.push('/wallet/receive')}
-              containerStyles={styles.receiveButton}
-              textColor="#FFFFFF"
-            />
+         
           </View> */}
+          
         </View>
       </ScrollView>
     </SafeAreaView>
