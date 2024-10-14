@@ -9,14 +9,15 @@ import SupplyChainContract from '../../contract/SupplyChain.json';
 
 const contractAddress = "0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6";
 const projectId = "1e17a2872b93b5b42a336585c052e9ff";
-
+const MAP_BOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYXJ5YW1hbjMyMSIsImEiOiJjbHk1cjA4ZHUwMmtsMnZyMWpkd3BmdW56In0.A_pE1P5o-XKKaTX1PBKJXQ'; // replace with your actual token
 
 const Home = () => {
   const { address, open, isConnected, provider } = useWalletConnectModal();
   const [location, setLocation] = useState(null);
   const [productId, setProductId] = useState('');
   const [productHistory, setProductHistory] = useState([]);
-  
+  const [routeCoordinates, setRouteCoordinates] = useState([]);
+
   // Initialize WalletConnect provider
   useEffect(() => {
     const initProvider = async () => {
@@ -46,6 +47,37 @@ const Home = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    const fetchRoute = async () => {
+      if (productHistory.length < 2) {
+        console.log('Not enough points to fetch route');
+        return; // Not enough points to fetch a route
+      }
+
+      const start = productHistory[0].location.split(','); // First marker
+      const end = productHistory[productHistory.length - 1].location.split(','); // Last marker
+
+      try {
+        let response = await fetch(
+          `https://api.mapbox.com/directions/v5/mapbox/driving/${start[1]},${start[0]};${end[1]},${end[0]}?` +
+          new URLSearchParams({
+            geometries: 'geojson',
+            access_token: MAP_BOX_ACCESS_TOKEN,
+          })
+        );
+        let data = await response.json();
+        let coordinates = data.routes[0].geometry.coordinates.map(coord => ({
+          latitude: coord[1],
+          longitude: coord[0],
+        }));
+        setRouteCoordinates(coordinates);
+      } catch (error) {
+        console.log('Error fetching route:', error);
+      }
+    };
+
+    fetchRoute();
+  }, [productHistory]);
 
   const getContract = () => {
     if (!provider) {
@@ -62,6 +94,7 @@ const Home = () => {
       return null;
     }
   };
+
   const fetchProductHistory = async () => {
     if (!productId || !provider) {
       Alert.alert('Error', 'Please enter a valid Product ID and connect to the wallet.');
@@ -70,11 +103,10 @@ const Home = () => {
     const contract = getContract();
 
     try {
-      console.log("Started tKING HISTORY");
-       const history = await contract.getProductHistory(productId);
-       console.log(history);
+      console.log("Started fetching history");
+      const history = await contract.getProductHistory(productId);
+      console.log(history);
       setProductHistory(history);
-      
     } catch (error) {
       Alert.alert('Error', 'Failed to fetch product history.');
       console.error(error);
@@ -96,7 +128,6 @@ const Home = () => {
         <TouchableOpacity style={styles.button} onPress={fetchProductHistory}>
           <Text style={styles.buttonText}>Search</Text>
         </TouchableOpacity>
-
         {location && (
           <MapView
             style={styles.map}
@@ -118,6 +149,11 @@ const Home = () => {
                 description={`Updated by: ${step.stakeholder}`}
               />
             ))}
+
+            {/* Adding Polyline to connect the markers */}
+            {routeCoordinates.length > 0 && (
+              <Polyline coordinates={routeCoordinates} strokeColor="blue" strokeWidth={3} />
+            )}
           </MapView>
         )}
       </KeyboardAvoidingView>
