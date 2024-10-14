@@ -111,7 +111,43 @@ const Cnc = () => {
     const [history, setHistory] = useState([]);
     const [isRunning, setIsRunning] = useState(false);
     const intervalRef = useRef(null);
-    const [scatterData, setScatterData] = useState([]);
+
+    // All variable names
+    const variableNames = [
+        'Spindle Speed',
+        'Feed Rate',
+        'Tool Temperature',
+        'Vibration Level',
+        'Power Consumption',
+        'Tool Wear'
+    ];
+
+    // All combinations of variable pairs
+    const combinations = [
+        ['Spindle Speed', 'Feed Rate'],
+        ['Spindle Speed', 'Tool Temperature'],
+        ['Spindle Speed', 'Vibration Level'],
+        ['Spindle Speed', 'Power Consumption'],
+        ['Spindle Speed', 'Tool Wear'],
+        ['Feed Rate', 'Tool Temperature'],
+        ['Feed Rate', 'Vibration Level'],
+        ['Feed Rate', 'Power Consumption'],
+        ['Feed Rate', 'Tool Wear'],
+        ['Tool Temperature', 'Vibration Level'],
+        ['Tool Temperature', 'Power Consumption'],
+        ['Tool Temperature', 'Tool Wear'],
+        ['Vibration Level', 'Power Consumption'],
+        ['Vibration Level', 'Tool Wear'],
+        ['Power Consumption', 'Tool Wear'],
+    ];
+
+    // State for scatter data for each combination
+    const [scatterData, setScatterData] = useState(
+        combinations.reduce((acc, pair) => {
+            acc[pair.join('_')] = []; // Initialize each combination with an empty array
+            return acc;
+        }, {})
+    );
 
     const predictionCounts = history.reduce((acc, item) => {
         acc[item.prediction] = (acc[item.prediction] || 0) + 1;
@@ -177,51 +213,72 @@ const Cnc = () => {
     };
 
     useEffect(() => {
-        // Cleanup function to clear the interval on component unmount
-        return () => clearInterval(intervalRef.current);
-    }, []);
-
-    useEffect(() => {
-        // Update scatter plot data based on predictions
-        if (latestData.prediction) {
-            const spindleSpeed = latestData.enData[0];
-            const feedRate = latestData.enData[1];
-            const color = colorMapping[latestData.prediction] || 'gray';
-            setScatterData((prevScatter) => [
-                ...prevScatter,
-                { x: spindleSpeed, y: feedRate, backgroundColor: color },
-            ]);
+        if (latestData.enData) {
+            // Update scatter data for each combination
+            combinations.forEach((pair) => {
+                const key = pair.join('_');
+                const [xIndex, yIndex] = pair.map(variable => variableNames.indexOf(variable));
+                const newPoint = {
+                    x: latestData.enData[xIndex],
+                    y: latestData.enData[yIndex],
+                    backgroundColor: colorMapping[latestData.prediction] || 'gray', // Default color for unknown predictions
+                };
+                setScatterData(prevData => ({
+                    ...prevData,
+                    [key]: [...prevData[key], newPoint], // Append the new point to the scatter data for the corresponding combination
+                }));
+            });
         }
     }, [latestData]);
 
-    const scatterChartData = {
-        datasets: [{
-            label: 'Spindle Speed vs Feed Rate',
-            data: scatterData,
-            backgroundColor: scatterData.map((point) => point.backgroundColor),
-            pointRadius: 5,
-        }],
-    };
+    // Create scatter chart data for each combination
+    const scatterCharts = combinations.map((pair) => {
+        const key = pair.join('_');
+        const scatterChartData = {
+            datasets: [{
+                label: `${pair[0]} vs ${pair[1]}`,
+                data: scatterData[key],
+                backgroundColor: scatterData[key].map(item => item.backgroundColor),
+                pointRadius: 5,
+            }],
+        };
 
-    const renderLegend = () => (
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-            {Object.entries(colorMapping).map(([fault, color]) => (
-                <div key={fault} style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
-                    <div style={{
-                        width: '15px',
-                        height: '15px',
-                        backgroundColor: color,
-                        marginRight: '5px'
-                    }} />
-                    <span>{fault}</span>
-                </div>
-            ))}
-        </div>
-    );
+        return (
+            <div key={key} style={{ width: '45%', backgroundColor: 'white', padding: '20px', border: '2px solid orange', marginBottom: '20px' }}>
+                <h2 style={{ textAlign: 'center' }}>{`${pair[0]} vs ${pair[1]}`}</h2>
+                <Scatter data={scatterChartData} options={{
+                    scales: {
+                        x: { title: { display: true, text: pair[0] } },
+                        y: { title: { display: true, text: pair[1] } },
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                generateLabels: (chart) => {
+                                    const { datasets } = chart.data;
+                                    const colors = datasets[0].backgroundColor;
+
+                                    // Get unique predictions for labels
+                                    const uniquePredictions = [...new Set(scatterData[key].map(item => item.backgroundColor))];
+
+                                    return uniquePredictions.map((color, index) => ({
+                                        text: Object.keys(colorMapping).find(key => colorMapping[key] === color) || 'Unknown',
+                                        fillStyle: color,
+                                        hidden: false,
+                                        index,
+                                    }));
+                                }
+                            }
+                        }
+                    }
+                }} />
+            </div>
+        );
+    });
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1 style={{ textAlign: 'center' }}>CNC Live Prediction</h1>
+        <div>
             <LivePredictionDashboard
                 latestData={latestData}
                 dataLabels={dataLabels}
@@ -230,10 +287,8 @@ const Cnc = () => {
                 onStop={stopFetching}
                 isRunning={isRunning}
             />
-            {renderLegend()}
-            <div style={{ marginTop: '20px' ,backgroundColor: 'white',border: '2px solid orange',}}>
-                <h2 style={{ textAlign: 'center' }}>Scatter Plot: Spindle Speed vs Feed Rate</h2>
-                <Scatter data={scatterChartData} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px', flexWrap: 'wrap' }}>
+                {scatterCharts}
             </div>
         </div>
     );
