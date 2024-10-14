@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl, Modal, TextInput } from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  Modal,
+  TextInput
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
 import { ethers } from 'ethers';
@@ -7,6 +17,13 @@ import SupplyChainContract from '../../contract/SupplyChain.json';
 
 const projectId = "1e17a2872b93b5b42a336585c052e9ff";
 const contractAddress = "0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6";
+
+
+const CustomButton = ({ onPress, title, style }) => (
+  <TouchableOpacity style={[styles.customButton, style]} onPress={onPress}>
+    <Text style={styles.buttonText}>{title}</Text>
+  </TouchableOpacity>
+);
 
 const ProductDetails = () => {
   const { address, open, isConnected, provider } = useWalletConnectModal();
@@ -55,9 +72,9 @@ const ProductDetails = () => {
   const getProductDetails = async () => {
     const contract = getContract();
     if (!contract || !productId) return;
-
+  
     try {
-      const details = await contract.getProductDetails(productId);
+      const details = await contract.getProductDetails(ethers.BigNumber.from(productId));
       setProductDetails(details);
       setMessage(`Details retrieved for product ID: ${productId}`);
     } catch (error) {
@@ -65,10 +82,15 @@ const ProductDetails = () => {
       setMessage('Failed to retrieve product details');
     }
   };
+  
 
   const getProductHistory = async () => {
     const contract = getContract();
-    if (!contract || !productId) return;
+    if (!contract || !productId) {
+      setMessage('Contract or Product ID not found');
+      return;
+    }
+    
 
     try {
       const history = await contract.getProductHistory(productId);
@@ -116,93 +138,88 @@ const ProductDetails = () => {
 
   }, [isConnected, productId]); // Runs when isConnected or productId changes
 
-return (
-  <ScrollView
-    contentContainerStyle={styles.container}
-    refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }
-  >
-    {productDetails ? (
-      <View style={styles.detailsContainer}>
-        <Text style={styles.detailsTitle}>Product Details:</Text>
-        <Text style={styles.detailText}>ID: {productDetails[0].toString()}</Text>
-        <Text style={styles.detailText}>Name: {productDetails[1]}</Text>
-        <Text style={styles.detailText}>Company: {productDetails[2]}</Text>
-        <Text style={styles.detailText}>Manufacturer: {productDetails[3]}</Text>
-        <Text style={styles.detailText}>Current Owner: {productDetails[4]}</Text>
-        <Text style={styles.detailText}>Creation Timestamp: {productDetails[5].toString()}</Text>
-      </View>
-    ) : (
-      <Text style={styles.infoText}>No product details available.</Text>
-    )}
-
-    {productHistory.length > 0 ? (
-      <View style={styles.historyContainer}>
-        <Text style={styles.historyTitle}>Product History:</Text>
-        {productHistory.map((step, index) => (
-          <View key={index}>
-            <View style={styles.historyStep}>
-              <Text style={styles.historyText}>Status: {step.status}</Text>
-              <Text style={styles.historyText}>Location: {step.location}</Text>
-              <Text style={styles.historyText}>Stakeholder: {step.stakeholder}</Text>
-              <Text style={styles.historyText}>Timestamp: {step.timestamp.toString()}</Text>
-            </View>
-            {index !== productHistory.length - 1 && (
-              <View style={styles.separator} />
-            )}
-          </View>
-        ))}
-      </View>
-    ) : (
-      <Text style={styles.infoText}>No product history available</Text>
-    )}
-
-    {/* Add New Step Button */}
-    <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)}>
-      <Text style={styles.buttonText}>Add New Step</Text>
-    </TouchableOpacity>
-
-    {/* Notification-like Modal */}
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
+  return (
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalNotification}>
-          <Text style={styles.modalTitle}>Add New Step</Text>
+      <Text style={styles.title}>Product Details</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Status"
-            value={status}
-            onChangeText={setStatus}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Location"
-            value={location}
-            onChangeText={setLocation}
-          />
-
-<TouchableOpacity style={styles.addStepButton} onPress={addNewStep}>
-  <Text style={styles.buttonText}>Add Step</Text>
-</TouchableOpacity>
-
-<TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
-  <Text style={styles.buttonText}>Close</Text>
-</TouchableOpacity>
-
+      {productDetails ? (
+        <View style={styles.detailsContainer}>
+          <Text style={styles.detailsTitle}>Product Details:</Text>
+          <Text style={styles.detailText}>ID: {productDetails[0].toString()}</Text>
+          <Text style={styles.detailText}>Name: {productDetails[1]}</Text>
+          <Text style={styles.detailText}>Company: {productDetails[2]}</Text>
+          <Text style={styles.detailText}>Manufacturer: {productDetails[3]}</Text>
+          <Text style={styles.detailText}>Current Owner: {productDetails[4]}</Text>
+          <Text style={styles.detailText}>Creation Timestamp: {productDetails[5].toString()}</Text>
         </View>
-      </View>
-    </Modal>
+      ) : (
+        <Text style={styles.infoText}>No product details available.</Text>
+      )}
 
-    <Text style={styles.messageText}>{message}</Text>
-  </ScrollView>
-)
+      {productHistory.length > 0 ? (
+        <View style={styles.historyContainer}>
+          <Text style={styles.historyTitle}>Product History:</Text>
+          {productHistory.map((step, index) => (
+            <View key={index}>
+              <View style={styles.historyStep}>
+                <Text style={styles.historyText}>Status: {step.status}</Text>
+                <Text style={styles.historyText}>Location: {step.location}</Text>
+                <Text style={styles.historyText}>Stakeholder: {step.stakeholder}</Text>
+                <Text style={styles.historyText}>Timestamp: {step.timestamp.toString()}</Text>
+              </View>
+              {index !== productHistory.length - 1 && (
+                <View style={styles.separator} />
+              )}
+            </View>
+          ))}
+        </View>
+      ) : (
+        <Text style={styles.infoText}>No product history available</Text>
+      )}
+
+      {/* Add New Step Button */}
+      <CustomButton style={styles.addButton} onPress={() => setModalVisible(true)} title="Add New Step" />
+
+      {/* Notification-like Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalNotification}>
+            <Text style={styles.modalTitle}>Add New Step</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Status"
+              value={status}
+              onChangeText={setStatus}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Location"
+              value={location}
+              onChangeText={setLocation}
+            />
+
+            <CustomButton style={styles.addStepButton} onPress={addNewStep} title="Add Step" />
+
+            <CustomButton style={styles.closeButton} onPress={() => setModalVisible(false)} title="Close" />
+          </View>
+        </View>
+      </Modal>
+
+      <Text style={styles.messageText}>{message}</Text>
+    </ScrollView>
+  );
 };
 
 // Updated Styles
@@ -212,6 +229,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#007AFF',
+    marginVertical: 20,
   },
   detailsContainer: {
     marginTop: 20,
@@ -253,85 +276,80 @@ const styles = StyleSheet.create({
     borderColor: '#DDD',
   },
   historyText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
   },
   separator: {
     height: 1,
-    backgroundColor: '#DDD',
-    marginVertical: 10,
+    backgroundColor: '#EEE',
+    marginVertical: 5,
   },
   addButton: {
-    marginTop: 20,
     backgroundColor: '#007AFF',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 5,
     width: '100%',
     alignItems: 'center',
+    marginTop: 20,
+  },
+  customButton: {
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 10,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    color: '#FFF',
     fontWeight: 'bold',
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Dim background to emphasize the pop-up
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalNotification: {
-    width: 250, // Small square-like shape
-    padding: 30,
-    backgroundColor: '#FFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Change to semi-transparent white
+    padding: 20,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    width: '80%',
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 25,
-    textAlign: 'center',
+    marginBottom: 15,
+    color: '#007AFF',
   },
   input: {
-    width: '100%',
-    borderColor: '#DDD',
+    height: 40,
+    borderColor: '#CCC',
     borderWidth: 1,
     borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    fontSize: 16,
+    paddingHorizontal: 10,
+    marginBottom: 15,
   },
   addStepButton: {
-    backgroundColor: '#007AFF', // Blue color for the "Add Step" button
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 5,
     alignItems: 'center',
-    marginVertical: 10,
-    width: '100%',
+    marginBottom: 10,
   },
   closeButton: {
-    backgroundColor: '#FF3B30', // Red color for the "Close" button
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: '#FF4D4D',
+    padding: 10,
+    borderRadius: 5,
     alignItems: 'center',
-    marginVertical: 10,
-    width: '100%',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   messageText: {
-    marginTop: 20,
-    fontSize: 14,
-    color: '#FF0000',
+    color: 'red',
+    marginTop: 10,
   },
+  infoText: {
+    color: '#555',
+    marginTop: 10,
+  }
 });
 
 export default ProductDetails;

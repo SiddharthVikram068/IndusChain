@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import CustomButton from '@/components/CustomButton';
 
+
 export default function Component() {
   const animation = useRef(null);
 
@@ -44,10 +45,23 @@ export default function Component() {
               handlePress={() => router.push('/(auth)/sign-up')}
               containerStyles={styles.registerButton}
               textColor="#FFFFFF"
+
             />
           </View>
 
-          <Link href="/(tabs)/home">hello</Link>
+
+
+
+
+
+
+
+
+
+
+
+
+           <Link href="/(tabs)/home">hello</Link>
           <Link href="/web3/wallet_connect">wallet</Link>
 {/* =======
 >>>>>>> c57b618190d11c388d4b92c52148f20359c8f884 */}
@@ -127,14 +141,14 @@ const styles = StyleSheet.create({
   signInButton: {
     backgroundColor: '#000000',
     paddingVertical: 15,
-    borderRadius: 40,
+    borderRadius: 20,
     flex: 1,
     marginHorizontal: 5,
   },
   registerButton: {
     backgroundColor: '#70260F',
     paddingVertical: 15,
-    borderRadius: 40,
+    borderRadius: 20,
     flex: 1,
     marginHorizontal: 5,
   },

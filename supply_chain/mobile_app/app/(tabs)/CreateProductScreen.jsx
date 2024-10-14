@@ -4,16 +4,16 @@ import {
   Text,
   StyleSheet,
   Alert,
-  Image,
   ActivityIndicator,
-  Button, // Import Button for the current location button
+  TouchableOpacity,
 } from 'react-native';
 import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
 import { ethers } from 'ethers';
-import * as Location from 'expo-location'; // Import Location
+import * as Location from 'expo-location';
 import SupplyChainContract from '../../contract/SupplyChain.json';
 import SubmitButton from '../../components/SubmitButton';
 import FormField from '../../components/FormField';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const projectId = "1e17a2872b93b5b42a336585c052e9ff";
 const contractAddress = "0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6";
@@ -33,7 +33,7 @@ const CreateProductScreen = () => {
   const [productId, setProductId] = useState('');
   const [productName, setProductName] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(''); // Store location as a string
   const [loading, setLoading] = useState(false);
   const { provider } = useWalletConnectModal();
 
@@ -67,20 +67,20 @@ const CreateProductScreen = () => {
     }
   };
 
-  // Function to get current location
   const getCurrentLocation = async () => {
     try {
-      // Request permission to access location
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Permission Denied', 'Permission to access location was denied.');
         return;
       }
 
-      // Get the current location
       const location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
-      setLocation(`Lat: ${latitude}, Lon: ${longitude}`);
+
+      // Update location state with formatted string
+      setLocation(`${latitude.toFixed(6)},${longitude.toFixed(6)}`);
+      console.log(`Current Location - Latitude: ${latitude}, Longitude: ${longitude}`);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to fetch location. Please try again.');
@@ -89,8 +89,6 @@ const CreateProductScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/images/bg.png')} style={styles.backgroundImage} />
-
       <View style={styles.formContainer}>
         <Text style={styles.title}>Create a New Product</Text>
 
@@ -110,14 +108,19 @@ const CreateProductScreen = () => {
           value={companyName}
           onChangeText={setCompanyName}
         />
-        <View style={styles.locationContainer}>
+        {/* <View style={styles.locationContainer}> */}
           <FormField
             placeholder="Location"
             value={location}
             onChangeText={setLocation}
+            style={styles.locationInput}
           />
-          <Button title="Current Location" onPress={getCurrentLocation} /> 
-        </View>
+       <TouchableOpacity onPress={getCurrentLocation} style={styles.iconButton}>
+  
+  <Text style={styles.buttonText}>Set Current Location</Text>
+</TouchableOpacity>
+
+        {/* </View> */}
 
         <View style={styles.buttonContainer}>
           {loading ? (
@@ -127,6 +130,7 @@ const CreateProductScreen = () => {
               title="Create Product"
               handlePress={handleCreateProduct}
               disabled={!productId || !productName || !companyName || !location}
+              style={styles.submitButton}
             />
           )}
         </View>
@@ -141,14 +145,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  },
-  backgroundImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '120%',
-    resizeMode: 'cover',
   },
   formContainer: {
     flex: 1,
@@ -169,10 +165,27 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', // Aligns the button to the side of the input
+    justifyContent: 'space-between', // Ensure space is between input and button
+    marginBottom: 20,
+  },
+  locationInput: {
+    flex: 1,
+    height: 60, // Increased height for better visibility
+    fontSize: 16, // Increased font size for better readability
+    paddingHorizontal: 10, // Add some padding
+    marginRight: 10, // Add some space between the input and button
+  },
+  iconButton: {
+    padding: 12, // Increased padding for the button
+    height: 60, // Set the button height to match the input
+    justifyContent: 'center', // Center the icon vertically
+    alignItems: 'center', // Center the icon horizontally
   },
   buttonContainer: {
     marginTop: 30,
+  },
+  submitButton: {
+    height: 60, // Set height for the SubmitButton
   },
 });
 

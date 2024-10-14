@@ -14,8 +14,8 @@ const Scan = () => {
   // Load custom fonts
   const loadFonts = async () => {
     await Font.loadAsync({
-      'Poppins-Bold': require('../../assets/fonts/Poppins-Bold.ttf'), // Adjust the path as necessary
-      'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'), // Adjust the path as necessary
+      'Poppins-SemiBold': require('../../assets/fonts/Poppins-SemiBold.ttf'), // New font for the title
+      'Poppins-Light': require('../../assets/fonts/Poppins-Light.ttf'), // New font for the content
     });
     setFontLoaded(true);
   };
@@ -170,11 +170,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   title: {
-    fontFamily: 'Poppins-Bold', // Use the Poppins font
+    fontFamily: 'Poppins-SemiBold', // Updated to use the new font
     fontSize: 28,
     fontWeight: '700',
+
     color: '#2C3E50',
-    marginBottom: 20,
+    marginBottom: 30,
     textAlign: 'center',
   },
   instructionsContainer: {
@@ -182,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   instructions: {
-    fontFamily: 'Poppins-Regular', // Use the Poppins font
+    fontFamily: 'Poppins-Light', // Updated to use the new font
     fontSize: 16,
     color: '#34495E',
     textAlign: 'center',
@@ -200,14 +201,14 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   buttonText: {
-    fontFamily: 'Poppins-Bold', // Use the Poppins font
+    fontFamily: 'Poppins-SemiBold', // Updated to use the new font
     fontSize: 18,
     color: '#ffffff',
     fontWeight: '600',
   },
   scannedData: {
     marginTop: 20,
-    fontFamily: 'Poppins-Regular', // Use the Poppins font
+    fontFamily: 'Poppins-Light', // Updated to use the new font
     fontSize: 18,
     color: '#2C3E50',
   },
