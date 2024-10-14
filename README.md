@@ -102,7 +102,7 @@ The platform enhances **sustainability and transparency** by combining blockchai
 ![Alerts](./assets/alerts.png)  
 
 ### 3. CargoChain Mobile App  
-![CargoChain App](./assets/cargochain.png)  
+![CargoChain App](mobile_app.png)  
 
 ---
 
