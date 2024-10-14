@@ -40,6 +40,10 @@ const colorMapping = {
 // LivePredictionDashboard Component
 const LivePredictionDashboard = ({ latestData, dataLabels, chartData, onStart, onStop, isRunning }) => {
     return (
+        <>
+        <div style={{ textAlign: 'center', fontSize: '2rem', fontWeight: 'bold' }}>
+            CNC MILLING MACHINE
+        </div>
         <div style={{ display: 'flex', marginTop: '50px', height: '80vh', gap: '20px' }}>
             <div style={{
                 backgroundColor: 'white',
@@ -103,6 +107,7 @@ const LivePredictionDashboard = ({ latestData, dataLabels, chartData, onStart, o
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
@@ -200,7 +205,7 @@ const Cnc = () => {
                     setLatestData(newEntry);
                     setHistory((prevHistory) => [...prevHistory, newEntry]);
                 }
-            }, 1000);
+            }, 1500);
         }
     };
 
@@ -295,3 +300,5 @@ const Cnc = () => {
 };
 
 export default Cnc;
+
+
