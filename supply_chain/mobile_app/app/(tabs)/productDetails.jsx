@@ -18,7 +18,6 @@ import SupplyChainContract from '../../contract/SupplyChain.json';
 const projectId = "1e17a2872b93b5b42a336585c052e9ff";
 const contractAddress = "0xB0486Ec5947DEef6Fe9C736bAAAE7cd51CEf44e6";
 
-
 const CustomButton = ({ onPress, title, style }) => (
   <TouchableOpacity style={[styles.customButton, style]} onPress={onPress}>
     <Text style={styles.buttonText}>{title}</Text>
@@ -72,7 +71,7 @@ const ProductDetails = () => {
   const getProductDetails = async () => {
     const contract = getContract();
     if (!contract || !productId) return;
-  
+
     try {
       const details = await contract.getProductDetails(ethers.BigNumber.from(productId));
       setProductDetails(details);
@@ -82,7 +81,6 @@ const ProductDetails = () => {
       setMessage('Failed to retrieve product details');
     }
   };
-  
 
   const getProductHistory = async () => {
     const contract = getContract();
@@ -90,7 +88,6 @@ const ProductDetails = () => {
       setMessage('Contract or Product ID not found');
       return;
     }
-    
 
     try {
       const history = await contract.getProductHistory(productId);
@@ -104,10 +101,10 @@ const ProductDetails = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await fetchProductIdFromLocalStorage(); // Fetch the product ID
-    await getProductDetails(); // Get product details
-    await getProductHistory(); // Get product history
-    setRefreshing(false); // Stop refreshing
+    await fetchProductIdFromLocalStorage();
+    await getProductDetails();
+    await getProductHistory();
+    setRefreshing(false);
   };
 
   const addNewStep = async () => {
@@ -117,26 +114,30 @@ const ProductDetails = () => {
     try {
       await contract.updateStatus(productId, status, location);
       setMessage('New step added successfully');
-      await getProductHistory(); // Refresh product history after adding new step
-      setModalVisible(false); // Close the modal after successful addition
+      await getProductHistory();
+      setModalVisible(false);
     } catch (error) {
       console.error(error);
       setMessage('Failed to add new step');
     }
   };
 
+  const convertTimestampToReadable = (timestamp) => {
+    const date = new Date(timestamp * 1000); // Convert to milliseconds
+    return date.toLocaleString(); // Format to a readable string
+  };
+
   useEffect(() => {
     const initialize = async () => {
-      await fetchProductIdFromLocalStorage(); // Fetch the product ID
+      await fetchProductIdFromLocalStorage();
       if (productId) {
-        await getProductDetails(); // Get product details if productId exists
-        await getProductHistory(); // Get product history if productId exists
+        await getProductDetails();
+        await getProductHistory();
       }
     };
-    
-    initialize(); // Call the initialize function
 
-  }, [isConnected, productId]); // Runs when isConnected or productId changes
+    initialize();
+  }, [isConnected, productId]);
 
   return (
     <ScrollView
@@ -145,7 +146,15 @@ const ProductDetails = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <Text style={styles.title}>Product Details</Text>
+        <View style={styles.header}>
+        <Text style={styles.title}>Product</Text>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.addButtonText}>+</Text>
+        </TouchableOpacity>
+      </View>
 
       {productDetails ? (
         <View style={styles.detailsContainer}>
@@ -155,26 +164,34 @@ const ProductDetails = () => {
           <Text style={styles.detailText}>Company: {productDetails[2]}</Text>
           <Text style={styles.detailText}>Manufacturer: {productDetails[3]}</Text>
           <Text style={styles.detailText}>Current Owner: {productDetails[4]}</Text>
-          <Text style={styles.detailText}>Creation Timestamp: {productDetails[5].toString()}</Text>
+          <Text style={styles.detailText}>Creation Timestamp: {convertTimestampToReadable(productDetails[5].toString())}</Text>
         </View>
       ) : (
         <Text style={styles.infoText}>No product details available.</Text>
       )}
 
       {productHistory.length > 0 ? (
-        <View style={styles.historyContainer}>
+        <View>
           <Text style={styles.historyTitle}>Product History:</Text>
           {productHistory.map((step, index) => (
+            
             <View key={index}>
+              <View style={styles.historyContainer} >
+              
               <View style={styles.historyStep}>
-                <Text style={styles.historyText}>Status: {step.status}</Text>
+                <Text style={styles.historyText}>Status: </Text>
+                <View style={styles.red}>
+                <Text  style={styles.historyText}
+                 >{step.status}</Text>
+                </View>
                 <Text style={styles.historyText}>Location: {step.location}</Text>
                 <Text style={styles.historyText}>Stakeholder: {step.stakeholder}</Text>
-                <Text style={styles.historyText}>Timestamp: {step.timestamp.toString()}</Text>
+                <Text style={styles.historyText}>Timestamp: {convertTimestampToReadable(step.timestamp.toString())}</Text>
+
               </View>
-              {index !== productHistory.length - 1 && (
-                <View style={styles.separator} />
-              )}
+             
+            </View>
+
             </View>
           ))}
         </View>
@@ -183,7 +200,7 @@ const ProductDetails = () => {
       )}
 
       {/* Add New Step Button */}
-      <CustomButton style={styles.addButton} onPress={() => setModalVisible(true)} title="Add New Step" />
+     
 
       {/* Notification-like Modal */}
       <Modal
@@ -226,82 +243,81 @@ const ProductDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
     padding: 20,
+    backgroundColor: '#0', // Black background
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop:20
   },
   title: {
-    fontSize: 24,
+    fontSize: 34,
     fontWeight: 'bold',
-    color: '#007AFF',
-    marginVertical: 20,
-  },
-  detailsContainer: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    width: '100%',
-  },
-  detailsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#007AFF',
-  },
-  detailText: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: '#333',
-  },
-  historyContainer: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    width: '100%',
-  },
-  historyTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#007AFF',
-  },
-  historyStep: {
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#DDD',
-  },
-  historyText: {
-    fontSize: 14,
-    color: '#333',
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#EEE',
-    marginVertical: 5,
+    color: '#111111', // White text
+    marginTop:20,
   },
   addButton: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 5,
-    width: '100%',
+    backgroundColor: '#007AFF', // Button color
+    borderRadius: 30,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    elevation: 3,
   },
-  customButton: {
-    backgroundColor: '#007AFF',
+  addButtonText: {
+    fontSize: 24,
+    color: '#fff',
+  },
+  detailsContainer: {
+    backgroundColor:'#2a3439', // Dark grey for contrast
+    padding: 15,
+    borderRadius: 20,
+    marginBottom: 20,
+  },
+  red: {
+    marginVertical: 10,
+    backgroundColor: '#4caf50',
     padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
+    width: 120,
+    borderRadius: 10,
+  },
+  detailsTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff', // White text
+  },
+  detailText: {
+    fontSize: 18,
+    color: '#fff', // White text
+  },
+  historyTitle: {
+    fontSize: 34,
+    fontWeight: 'bold',
+    color: '#111111', // White text
     marginBottom: 10,
   },
-  buttonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
+  historyContainer: {
+    backgroundColor: '#2a3439',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  historyStep: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  historyText: {
+    fontSize: 16,
+    color: '#fff', // White text
+  },
+  infoText: {
+    fontSize: 18,
+    color: '#999999',
+    marginTop: 10,
   },
   modalContainer: {
     flex: 1,
@@ -310,46 +326,44 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalNotification: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Change to semi-transparent white
+    backgroundColor: '#fff',
     padding: 20,
     borderRadius: 10,
     width: '80%',
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 15,
-    color: '#007AFF',
-  },
-  input: {
-    height: 40,
-    borderColor: '#CCC',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 15,
-  },
-  addStepButton: {
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
     marginBottom: 10,
   },
-  closeButton: {
-    backgroundColor: '#FF4D4D',
-    padding: 10,
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 5,
-    alignItems: 'center',
+    padding: 10,
+    marginBottom: 15,
   },
   messageText: {
-    color: 'red',
-    marginTop: 10,
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#ff0000', // Red for messages
   },
-  infoText: {
-    color: '#555',
-    marginTop: 10,
-  }
+  addStepButton: {
+    backgroundColor: '#2a3439',
+    borderRadius: 5,
+    marginVertical: 5,
+    padding: 10,
+  },
+  closeButton: {
+    backgroundColor: '#111111',
+    borderRadius: 5,
+    marginVertical: 5,
+    padding: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
 });
 
 export default ProductDetails;

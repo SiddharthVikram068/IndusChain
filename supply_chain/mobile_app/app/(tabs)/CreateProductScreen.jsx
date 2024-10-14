@@ -85,108 +85,137 @@ const CreateProductScreen = () => {
       console.error(error);
       Alert.alert('Error', 'Failed to fetch location. Please try again.');
     }
+  
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>Create a New Product</Text>
-
-        <FormField
-          placeholder="Product ID"
-          value={productId}
-          onChangeText={setProductId}
-          keyboardType="numeric"
-        />
-        <FormField
-          placeholder="Product Name"
-          value={productName}
-          onChangeText={setProductName}
-        />
-        <FormField
-          placeholder="Company Name"
-          value={companyName}
-          onChangeText={setCompanyName}
-        />
-        {/* <View style={styles.locationContainer}> */}
-          <FormField
-            placeholder="Location"
-            value={location}
-            onChangeText={setLocation}
-            style={styles.locationInput}
-          />
-       <TouchableOpacity onPress={getCurrentLocation} style={styles.iconButton}>
-  
-  <Text style={styles.buttonText}>Set Current Location</Text>
-</TouchableOpacity>
-
-        {/* </View> */}
-
-        <View style={styles.buttonContainer}>
-          {loading ? (
-            <ActivityIndicator size="large" color="#70260F" />
-          ) : (
-            <SubmitButton
-              title="Create Product"
-              handlePress={handleCreateProduct}
-              disabled={!productId || !productName || !companyName || !location}
-              style={styles.submitButton}
+      <Text style={styles.title}>Create a New Product</Text>
+      
+      {/* Center container */}
+      <View style={styles.centerContainer}>
+        <View style={styles.formContainer}>
+          {/* Input label and field for Product ID */}
+          <View style={styles.inputs}>
+                       <FormField
+              placeholder="Enter Product ID"
+              value={productId}
+              onChangeText={setProductId}
+              keyboardType="numeric"
             />
-          )}
+          </View>
+  
+          {/* Input label and field for Product Name */}
+          <View style={styles.inputs}>
+            
+            <FormField
+              placeholder="Enter Product Name"
+              value={productName}
+              onChangeText={setProductName}
+            />
+          </View>
+  
+          {/* Input label and field for Company Name */}
+          <View style={styles.inputs}>
+            
+            <FormField
+              placeholder="Enter Company Name"
+              value={companyName}
+              onChangeText={setCompanyName}
+            />
+          </View>
+  
+          {/* Input label and field for Location */}
+          <View style={styles.inputs}>
+                     <FormField
+              placeholder="Enter Location"
+              value={location}
+              onChangeText={setLocation}
+              style={styles.locationInput}
+            />
+          </View>
+  
+          <TouchableOpacity onPress={getCurrentLocation} style={styles.iconButton}>
+            <Text style={styles.buttonText}>Set Current Location</Text>
+          </TouchableOpacity>
+  
+          <View style={styles.buttonContainer}>
+            {loading ? (
+              <ActivityIndicator size="large" color="#70260F" />
+            ) : (
+              <SubmitButton
+                title="Create Product"
+                handlePress={handleCreateProduct}
+                disabled={!productId || !productName || !companyName || !location}
+                style={styles.submitButton}
+              />
+            )}
+          </View>
         </View>
       </View>
-
+  
       <WalletConnectModal projectId={projectId} providerMetadata={providerMetadata} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  formContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-    marginTop: '30%',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 10,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 32,
-    fontFamily: 'Poppins-Medium',
-    color: '#70260F',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', // Ensure space is between input and button
-    marginBottom: 20,
-  },
-  locationInput: {
-    flex: 1,
-    height: 60, // Increased height for better visibility
-    fontSize: 16, // Increased font size for better readability
-    paddingHorizontal: 10, // Add some padding
-    marginRight: 10, // Add some space between the input and button
-  },
-  iconButton: {
-    padding: 12, // Increased padding for the button
-    height: 60, // Set the button height to match the input
-    justifyContent: 'center', // Center the icon vertically
-    alignItems: 'center', // Center the icon horizontally
-  },
-  buttonContainer: {
-    marginTop: 30,
-  },
-  submitButton: {
-    height: 60, // Set height for the SubmitButton
-  },
-});
-
+  
+  const styles = StyleSheet.create({
+    inputs: {
+      flexDirection: 'column',
+      marginBottom: 10,  // Adjust spacing between input fields (optional)
+      paddingTop: 0,     // Ensures no extra space on top of input fields
+    },
+    container: {
+      flex: 1,
+      backgroundColor: '#FFFFFF',
+    },
+    title: {
+      fontSize: 37,
+      fontFamily: 'Poppins-Bold',
+      color: '#111111',
+      textAlign: 'center',
+      marginTop: 80,
+    },
+    /* New container for centering the form */
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center', // Aligns the form container vertically centered
+      alignItems: 'center',     // Aligns the form container horizontally centered
+    },
+    formContainer: {
+      flexDirection: 'column',
+      width: '90%',  // Optional: set a fixed width to avoid the form stretching
+      padding: 30,
+      backgroundColor: 'rgba(255, 255, 255, 1)',
+      borderRadius: 30,
+      elevation: 10,
+      shadowColor: '#000',
+    },
+    inputLabel: {
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 2,  // Reduced margin to remove gap
+      textAlign: 'left',  // Aligns the text to the left
+    },
+    locationInput: {
+      flex: 1,
+      height: 60,
+      fontSize: 16,
+      paddingHorizontal: 10,
+      marginRight: 10,
+    },
+    iconButton: {
+      padding: 12,
+      height: 60,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    buttonContainer: {
+      marginTop: 30,
+    },
+    submitButton: {
+      height: 60,
+    },
+  });
+  
 export default CreateProductScreen;

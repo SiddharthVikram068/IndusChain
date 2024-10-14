@@ -21,7 +21,7 @@ const Home = () => {
   const [location, setLocation] = useState(null);
   const [productId, setProductId] = useState('');
   const [productHistory, setProductHistory] = useState([]);
-  const [routeCoordinates, setRouteCoordinates] = useState([]); // New state for route coordinates
+  const [routeCoordinates, setRouteCoordinates] = useState({});// New state for route coordinates
   const [mapType, setMapType] = useState('standard'); // To toggle map view type
   const [mapRef, setMapRef] = useState(null); // Reference to the MapView component for recentering
 
@@ -48,36 +48,48 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const fetchRoute = async () => {
+    const fetchRoutes = async () => {
       if (productHistory.length < 2) {
-        console.log('Not enough points to fetch route');
-        return; // Not enough points to fetch a route
+        console.log('Not enough points to fetch routes');
+        return; // Not enough points to fetch routes
       }
 
-      const start = productHistory[0].location.split(','); // First marker
-      const end = productHistory[productHistory.length - 1].location.split(','); // Last marker
+      const newRouteCoordinates = {};
 
-      try {
-        let response = await fetch(
-          `https://api.mapbox.com/directions/v5/mapbox/driving/${start[1]},${start[0]};${end[1]},${end[0]}?` +
-          new URLSearchParams({
-            geometries: 'geojson',
-            access_token: MAP_BOX_ACCESS_TOKEN,
-          })
-        );
-        let data = await response.json();
-        let coordinates = data.routes[0].geometry.coordinates.map(coord => ({
-          latitude: coord[1],
-          longitude: coord[0],
-        }));
-        setRouteCoordinates(coordinates);
-      } catch (error) {
-        console.log('Error fetching route:', error);
+      for (let i = 0; i < productHistory.length - 1; i++) {
+        const start = productHistory[i].location.split(','); // Start marker
+        const end = productHistory[i + 1].location.split(','); // End marker
+
+        try {
+          let response = await fetch(
+            `https://api.mapbox.com/directions/v5/mapbox/driving/${start[1]},${start[0]};${end[1]},${end[0]}?` +
+            new URLSearchParams({
+              geometries: 'geojson',
+              access_token: MAP_BOX_ACCESS_TOKEN,
+            })
+          );
+
+          let data = await response.json();
+          let coordinates = data.routes[0].geometry.coordinates.map(coord => ({
+            latitude: coord[1],
+            longitude: coord[0],
+          }));
+
+          // Store the coordinates in the dictionary with the route number as the key
+          newRouteCoordinates[i] = coordinates;
+
+        } catch (error) {
+          console.log(`Error fetching route from point ${i} to ${i + 1}:`, error);
+        }
       }
+
+      setRouteCoordinates(newRouteCoordinates);
     };
 
-    fetchRoute();
+    fetchRoutes();
   }, [productHistory]);
+
+
 
   const getContract = () => {
     if (!provider) {
@@ -137,6 +149,9 @@ const Home = () => {
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <Text style={styles.header}>Supply Chain Tracker</Text>
   
+        {/* Add horizontal line below the header */}
+        <View style={styles.line} />
+  
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -151,37 +166,38 @@ const Home = () => {
   
         {location && (
           <View style={styles.mapContainer}>
-            <MapView
-              ref={(ref) => setMapRef(ref)} // Capture map reference
-              style={styles.map}
-              mapType={mapType} // Apply map type
-              initialRegion={{
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            >
-              {productHistory.map((step, index) => (
-                <Marker
-                  key={index}
-                  coordinate={{
-                    latitude: parseFloat(step.location.split(',')[0]),
-                    longitude: parseFloat(step.location.split(',')[1]),
-                  }}
-                  title={step.status}
-                  description={`Updated by: ${step.stakeholder}`}
-                />
-              ))}
-              {/* Draw the route using Polyline */}
-              {routeCoordinates.length > 0 && (
-                <Polyline
-                  coordinates={routeCoordinates}
-                  strokeColor="blue"
-                  strokeWidth={3}
-                />
-              )}
-            </MapView>
+             <MapView
+        ref={(ref) => setMapRef(ref)} // Capture map reference
+        style={styles.map}
+        mapType={mapType} // Apply map type
+        initialRegion={{
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {productHistory.map((step, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: parseFloat(step.location.split(',')[0]),
+              longitude: parseFloat(step.location.split(',')[1]),
+            }}
+            title={step.status}
+            description={`Updated by: ${step.stakeholder}`}
+          />
+        ))}
+        {/* Draw the routes using Polylines */}
+        {Object.entries(routeCoordinates).map(([key, coordinates]) => (
+          <Polyline
+            key={key}
+            coordinates={coordinates}
+            strokeColor="blue"
+            strokeWidth={3}
+          />
+        ))}
+      </MapView>
   
             {/* Floating button to toggle map type */}
             <TouchableOpacity style={styles.mapToggle} onPress={toggleMapType}>
@@ -197,9 +213,11 @@ const Home = () => {
       </KeyboardAvoidingView>
     </ScrollView>
   );
-}
+  }
+  
   const styles = StyleSheet.create({
     container: {
+      backgroundColor:'#ffffff',
       flexGrow: 1,
       justifyContent: 'flex-start', // Align items to the top
       alignItems: 'center',
@@ -207,11 +225,18 @@ const Home = () => {
       flex: 1, // Ensure container takes full height
     },
     header: {
-      fontSize: 24,
+      fontSize: 34,
       fontWeight: 'bold',
-      marginBottom: 20,
+      marginBottom: 10,
+      marginTop: 30,
       color: '#333',
-      fontFamily: 'Poppins-Black', // Set Poppins font for the header
+      fontFamily: 'Poppins-Bold', // Set Poppins font for the header
+    },
+    line: {
+      height: 2, // Adjusted height for visibility
+      backgroundColor: 'blue', // Change color to blue for better visibility
+      width: '100%', // Full width line
+      marginBottom: 20, // Space between the line and input
     },
     inputContainer: {
       flexDirection: 'row',
@@ -260,5 +285,5 @@ const Home = () => {
       borderRadius: 30,
     },
   });
-
+  
 export default Home;

@@ -27,7 +27,7 @@ const WalletConnectionPage = () => {
     if (!isConnected) {
       open(); // Open the wallet connect modal
     } else {
-      router.replace('/scan'); // Navigate to the scan page if already connected
+      router.replace('/home'); // Navigate to the scan page if already connected
     }
   };
 
