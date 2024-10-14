@@ -177,7 +177,7 @@ const Injection = () => {
     const dataLabels = [
         'Injection Pressure',
         'Melt Temperature',
-        'Claamping Force',
+        'Clamping Force',
         'Screw Speed',
         'Cycle Time',
         'Cooling Time',

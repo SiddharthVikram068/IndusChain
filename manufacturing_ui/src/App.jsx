@@ -9,6 +9,9 @@ import media4 from './assets/media-4.jpg'
 import media5 from './assets/media-5.jpg'
 import media6 from './assets/media-6.jpg'
 import FooterSocials from './FooterSocials'
+import { FaGooglePlay, FaApple } from 'react-icons/fa';
+import play from './assets/play.jpg'
+import mobile from './assets/mobile.jpeg'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -145,9 +148,53 @@ return (
             </div>
         </section>
 
+
+
+        <section className="section__container faq__container" id="Resources">
+
+            <div className="faq__content">
+                <h3 className="section__subheader">Our App</h3>
+                <h2 className="section__header">CargoChain</h2>
+                <p className="section__description">
+                    CargoChain offers comprehensive documentation on using our supply chain verification system for transparency and traceability.
+                    With advanced micro QR code scanning, products are seamlessly verified, boosting trust and preventing fraud.
+                    Our developer portal provides tools for easy integration, supporting businesses and individuals alike.
+                </p>
+                <div className="faq__grid">
+                    <div className="faq__card" style={{ border: '2px solid orange' }}>
+                        <div className="faq__header">
+                            <h4>Documentation and Supply Chain Reports</h4>
+                            <span><i className="ri-arrow-down-s-line"></i></span>
+                        </div>
+                    </div>
+
+                    <div className="faq__card" style={{ border: '2px solid orange' }}>
+                        <div className="faq__header">
+                            <a href="https://github.com/SiddharthVikram068/IndusChain/tree/Frontend_App/supply_chain/mobile_app" target="_blank" className="bold-link">
+                                Developer Resources and Portal
+                            </a>
+                            <span><i className="ri-arrow-down-s-line"></i></span>
+                        </div>
+                        <div className="faq__description">
+                            Our developer resources provide everything needed to integrate CargoChain into your system. Whether you’re working on supply chain verification or product tracking, our portal has all the tools you need.
+                        </div>
+                    </div>
+                    <div>
+                    <div className="faq__image">
+                        <img src={play} alt="faq" style={{ width: '100%', height: '80%' }} />
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div className="faq__image">
+                <img src={mobile} alt="faq" style={{ width: '50%', height: 'auto' }} />
+            </div>
+
+        </section>
+
         <section className="section__container article__container" id="Updates"></section>
       <section class="section__container article__container" id="Updates">
-        <h3 class="section__subheader">Insights And Innovation</h3>
+        <h3 class="sec</p>tion__subheader">Insights And Innovation</h3>
         <h2 class="section__header">Recent Articles</h2>
         <div class="article__grid">
           <div class="article__card">
