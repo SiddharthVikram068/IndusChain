@@ -39,10 +39,7 @@ const OwnerDashboard = () => {
               <Tasks />
             </div>
 
-            <div className="mt-6 bg-white border border-orange-600 shadow-lg rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-orange-600 mb-4">Tasks</h2>
-              <Tasks />
-            </div>
+            
 
           </div>
         </div>
