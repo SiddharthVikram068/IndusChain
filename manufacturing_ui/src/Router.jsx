@@ -15,6 +15,8 @@ import LATHEAnalysisPage from './pages/LATHEAnalysisPage';
 import INJECTIONAnalysisPage from './pages/INJECTIONAnalysisPage';
 import CONVEYORAnalysisPage from './pages/CONVEYORAnalysisPage';
 
+import CsvRender from './pages/CsvRender'
+
 const Router = () => {
   return (
     <>
@@ -33,6 +35,9 @@ const Router = () => {
         <Route path="/lathe" element={<LATHEAnalysisPage />}/>
         <Route path="/injection" element={<INJECTIONAnalysisPage />}/>
         <Route path="/conveyor" element={<CONVEYORAnalysisPage />}/>
+
+        <Route path="/csvrender" element={<CsvRender />}/>
+
 
     </Routes>
     </>

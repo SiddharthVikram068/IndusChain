@@ -40,12 +40,15 @@ const Sidebar = () => {
                   <Link to="/conveyor">Conveyor Belt System </Link>
                 </li>
                 <li className="p-4 hover:bg-orange-500">
+                  <Link to="/csvrender">CSV Analysis </Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
                   <button onClick={handleLogout} className="w-full text-left">
                       Logout
                   </button>
                 </li>
                 <li className="p-4 hover:bg-orange-500">
-                    Report (under development)
+                    Report (coming soon)
                 </li>
               </ul>
         </div>

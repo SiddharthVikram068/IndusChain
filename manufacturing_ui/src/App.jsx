@@ -259,8 +259,8 @@ return (
             <ul class="footer__links">
               <li><a href="#Resources">Products</a></li>
               <li><a href="#About">Blog</a></li>
-              <li><a href="#Contact">Contact Us</a></li>
               <li><a href="#Updates">Customer Support</a></li>
+              <li><a href="#Contact">Contact Us</a></li>
             </ul>
           </div>
           <div class="footer__col">

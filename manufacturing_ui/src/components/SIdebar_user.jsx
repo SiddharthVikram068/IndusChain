@@ -25,13 +25,19 @@ return (
                     <Link to="/user/info">Plant Information</Link>
                 </li>
                 <li className="p-4 hover:bg-orange-500">
+                  <Link to="/csvrender">CSV Analysis </Link>
+                </li>
+                <li className="p-4 hover:bg-orange-500">
                     {/* Change the logout link to a button */}
                     <button onClick={handleLogout}>
                         Logout
                     </button>
                 </li>
                 <li className="p-4 hover:bg-orange-500">
-                    Add device (under development)
+                    Add device (coming soon)
+                </li>
+                <li className="p-4 hover:bg-orange-500">
+                    Add Machinery (coming soon)
                 </li>
             </ul>
     </div>
